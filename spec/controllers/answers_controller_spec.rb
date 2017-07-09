@@ -45,7 +45,7 @@ RSpec.describe AnswersController, type: :controller do
       let(:valid_answer_attributes) { post :create, params: { answer: attributes_for(:answer), question_id: question } }
 
       it 'saves the answer to question in db' do
-        expect { valid_answer_attributes }.to change(Answer, :count).by(1)
+        expect { valid_answer_attributes }.to change(question.answers, :count).by(1)
       end
 
       it 'redirects to answer show view' do
