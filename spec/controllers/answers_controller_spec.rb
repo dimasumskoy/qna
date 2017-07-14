@@ -31,6 +31,10 @@ RSpec.describe AnswersController, type: :controller do
   describe 'GET #new' do
     before { get :new, params: { question_id: question } }
 
+    it 'assigns the requested question to @question' do
+      expect(assigns(:question)).to eq question
+    end
+
     it 'assigns the new answer to @answer' do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
@@ -44,13 +48,18 @@ RSpec.describe AnswersController, type: :controller do
     context 'with valid attributes' do
       let(:valid_answer_attributes) { post :create, params: { answer: attributes_for(:answer), question_id: question } }
 
+      it 'assigns the requested question to @question' do
+        valid_answer_attributes
+        expect(assigns(:question)).to eq question
+      end
+
       it 'saves the answer to question in db' do
         expect { valid_answer_attributes }.to change(question.answers, :count).by(1)
       end
 
-      it 'redirects to answer show view' do
+      it 'redirects to question show view' do
         valid_answer_attributes
-        expect(response).to redirect_to answer_path(assigns(:answer))
+        expect(response).to redirect_to question_path(assigns(:question))
       end
     end
 
