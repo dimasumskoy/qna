@@ -5,21 +5,20 @@ feature 'Create question', %q{
   As a user
   I want to be able to ask a question
 } do
-  scenario 'Authorized user creates a question' do
-    User.create!(email: 'user@test.com', password: '123456')
+  given(:user) { create(:user) }
+  given(:question) { create(:question) }
 
-    visit new_user_session_path
-    fill_in 'Email', with: 'user@test.com'
-    fill_in 'Password', with: '123456'
-    click_on 'Log in'
+  scenario 'Authorized user tries to create a question' do
+    sign_in(user)
 
     visit questions_path
     click_on 'Ask question'
-    fill_in 'Title', with: 'title'
-    fill_in 'Body', with: 'text'
+    fill_in 'Title', with: question.title
+    fill_in 'Body', with: question.body
     click_on 'Create'
 
-    expect(page).to have_content 'title'
+    expect(page).to have_content question.title
+    expect(page).to have_content question.body
   end
 
   scenario 'Unauthorized user tries to create a question' do

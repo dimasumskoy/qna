@@ -29,6 +29,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'GET #new' do
+    user_sign_in
+
     before { get :new, params: { question_id: question } }
 
     it 'assigns the requested question to @question' do
@@ -45,6 +47,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
+    user_sign_in
+    
     context 'with valid attributes' do
       let(:valid_answer_attributes) { post :create, params: { answer: attributes_for(:answer), question_id: question } }
 

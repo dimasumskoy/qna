@@ -7,19 +7,24 @@ feature 'Write an answer to the question', %q{
 } do
   given(:user) { create(:user) }
   given(:question) { create(:question) }
-  given(:answer) { question.answers.new(attributes_for(:answer)).save }
 
-  scenario 'An authorized user tries to write an answer' do
-    visit new_user_session_path
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-    click_on 'Log in'
+  scenario 'Authorized user tries to write an answer' do
+    sign_in(user)
     
     visit question_path(question)
     expect(page).to have_content question.body
 
-    fill_in 'Body', with: 'Test answer'
+    fill_in 'Body', with: 'Answer body'
     click_on 'Reply'
-    expect(page).to have_content 'Test answer'
+    expect(page).to have_content 'Answer body'
+  end
+
+  scenario 'Non-authorized user tries to write an answer' do
+    visit question_path(question)
+    expect(page).to have_content question.body
+    
+    fill_in 'Body', with: 'Answer body'
+    click_on 'Reply'
+    expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 end
