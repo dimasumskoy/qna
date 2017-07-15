@@ -11,9 +11,7 @@ feature 'Write an answer to the question', %q{
 
   scenario 'Authorized user tries to write an answer' do
     sign_in(user)
-    
-    visit question_path(question)
-    expect(page).to have_content question.body
+    check_question_body(question)
 
     fill_in 'Body', with: answer.body
     click_on 'Reply'
@@ -21,8 +19,7 @@ feature 'Write an answer to the question', %q{
   end
 
   scenario 'Non-authorized user tries to write an answer' do
-    visit question_path(question)
-    expect(page).to have_content question.body
+    check_question_body(question)
     
     fill_in 'Body', with: 'Answer body'
     click_on 'Reply'

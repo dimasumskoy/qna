@@ -4,7 +4,6 @@ class AnswersController < ApplicationController
   before_action :set_question, only: [:new, :create]
 
   def index
-    @answers = Answer.all
   end
 
   def show

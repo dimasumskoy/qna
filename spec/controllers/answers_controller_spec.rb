@@ -5,18 +5,6 @@ RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question, user: user) }
   let!(:answer) { create(:answer, question: question, user: user) }
 
-  describe 'GET #index' do
-    before { get :index, params: { question_id: question } }
-
-    it 'fills an array of answers to @answers' do
-      expect(assigns(:answers)).to eq([answer])
-    end
-
-    it 'renders index view' do
-      expect(response).to render_template :index
-    end
-  end
-
   describe 'GET #show' do
     before { get :show, params: { id: answer } }
 

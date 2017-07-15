@@ -22,12 +22,10 @@ feature 'Delete question', %q{
     other_user = create(:user)
     sign_in(other_user)
 
-    visit question_path(question)
-    expect(page).to_not have_link 'Delete this question'
+    check_without_deleting(question)
   end
 
   scenario 'Unauthorized user can not delete any question' do
-    visit question_path(question)
-    expect(page).to_not have_link 'Delete this question'
+    check_without_deleting(question)
   end
 end
