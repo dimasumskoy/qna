@@ -20,4 +20,9 @@ feature 'Sign in', %q{
 
     expect(page).to have_content 'Invalid Email or password.'
   end
+
+  scenario 'Signed in user can not sign in' do
+    sign_in(user)
+    expect(page).to_not have_link 'Sign in'
+  end
 end
