@@ -1,26 +1,34 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_question, only: [:show]
+  before_action :set_question, only: [:show, :destroy]
 
   def index
     @questions = Question.all
   end
 
   def show
-    @answers = @question.answers
   end
 
   def new
-    @question = Question.new
+    @question = current_user.questions.new
   end
 
   def create
-    @question = Question.new(question_params)
+    @question = current_user.questions.new(question_params)
 
     if @question.save
       redirect_to @question
     else
       render :new
+    end
+  end
+
+  def destroy
+    if current_user.questions.include?(@question)
+      @question.destroy
+      redirect_to questions_path, notice: 'Question successfully deleted.'
+    else
+      redirect_to questions_path
     end
   end
 

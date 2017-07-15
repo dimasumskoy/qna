@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) { create(:question) }
+  let(:user) { create(:user) }
+  let(:question) { create(:question, user: user) }
 
   describe 'GET #index' do
     before { get :index }
@@ -20,10 +21,6 @@ RSpec.describe QuestionsController, type: :controller do
 
     it 'assigns the requested question to @question' do
       expect(assigns(:question)).to eq question
-    end
-
-    it 'assigns answers for the requested question' do
-      expect(assigns(:answers)).to eq question.answers
     end
 
     it 'renders show view' do
@@ -49,7 +46,7 @@ RSpec.describe QuestionsController, type: :controller do
     user_sign_in
     
     context 'with valid attributes' do
-      let(:valid_question_params) { post :create, params: { question: attributes_for(:question) } }
+      let(:valid_question_params) { post :create, params: { question: attributes_for(:question), user: @user } }
 
       it 'saves the new question in db' do
         expect { valid_question_params }.to change(Question, :count).by(1)
@@ -71,6 +68,35 @@ RSpec.describe QuestionsController, type: :controller do
       it 're-renders new view' do
         invalid_question_params
         expect(response).to render_template :new
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    context 'authorized user tries to delete his question' do
+      user_sign_in
+
+      let!(:user_question) { create(:question, user: @user) }
+      let(:deleted_question) { delete :destroy, params: { id: user_question } }
+     
+      it 'deletes the question from db' do
+        expect { deleted_question }.to change(Question, :count).by(-1)
+      end
+
+      it 'renders index view' do
+        deleted_question
+        expect(response).to redirect_to questions_path
+      end
+    end
+
+    context 'authorized user tries to delete NOT his question' do
+      user_sign_in
+
+      let(:other_user) { create(:user) }
+      let!(:other_question) { create(:question, user: other_user) }
+
+      it 'does not deletes the question from db' do
+        expect { delete :destroy, params: { id: other_question } }.to_not change(Question, :count)
       end
     end
   end
