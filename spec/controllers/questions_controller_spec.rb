@@ -73,7 +73,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    context 'authorized user tries to delete his question' do
+    context 'authorized user deletes his question' do
       user_sign_in
 
       let!(:user_question) { create(:question, user: @user) }
@@ -83,20 +83,25 @@ RSpec.describe QuestionsController, type: :controller do
         expect { deleted_question }.to change(Question, :count).by(-1)
       end
 
-      it 'renders index view' do
+      it 'redirects to questions' do
         deleted_question
         expect(response).to redirect_to questions_path
       end
     end
 
-    context 'authorized user tries to delete NOT his question' do
+    context 'authorized user deletes NOT his question' do
       user_sign_in
 
-      let(:other_user) { create(:user) }
-      let!(:other_question) { create(:question, user: other_user) }
+      let!(:not_user_question) { create(:question, user: user) }
+      let(:not_deleted_question) { delete :destroy, params: { id: not_user_question } }
 
-      it 'does not deletes the question from db' do
-        expect { delete :destroy, params: { id: other_question } }.to_not change(Question, :count)
+      it 'can not delete the question from db' do
+        expect { not_deleted_question }.to_not change(Question, :count)
+      end
+
+      it 'redirects to question' do
+        not_deleted_question
+        expect(response).to redirect_to question_path(assigns(:question))
       end
     end
   end

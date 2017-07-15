@@ -8,6 +8,8 @@ h2 Answers
 .answer_list
     - @question.answers.each do |answer|
         p= answer.body
+        - if user_signed_in? && current_user.answers.include?(answer)
+        	p= link_to 'Delete answer', answer_path(answer), method: :delete, data: { confirm: 'Are you sure?' }
 
 h2 Write an answer
 .answer_field

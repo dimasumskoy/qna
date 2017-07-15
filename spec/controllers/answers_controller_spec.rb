@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-  let(:question) { create(:question) }
-  let(:answer) { create(:answer, question: question) }
+  let(:user) { create(:user) }
+  let(:question) { create(:question, user: user) }
+  let!(:answer) { create(:answer, question: question, user: user) }
 
   describe 'GET #index' do
     before { get :index, params: { question_id: question } }
@@ -76,7 +77,37 @@ RSpec.describe AnswersController, type: :controller do
 
       it 're-renders new view' do
         invalid_answer_attributes
-        expect(response).to render_template :new
+        expect(response).to render_template 'questions/show'
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    context 'authorized user deletes his answer' do
+      user_sign_in
+      let!(:user_answer) { create(:answer, question: question, user: @user) }
+
+      it 'deletes the answer from db' do
+        expect { delete :destroy, params: { id: user_answer } }.to change(Answer, :count).by(-1)
+      end
+
+      it 'redirects to answer question' do
+        delete :destroy, params: { id: user_answer }
+        expect(response).to redirect_to (assigns(:answer).question)
+      end
+    end
+
+    context 'authorized user deletes NOT his answer' do
+      user_sign_in
+      let!(:not_user_answer) { create(:answer, question: question, user: user) }
+
+      it 'does not deletes the answer from db' do
+        expect { delete :destroy, params: { id: not_user_answer } }.to_not change(Answer, :count)
+      end
+
+      it 'redirects to answer question' do
+        delete :destroy, params: { id: not_user_answer }
+        expect(response).to redirect_to (assigns(:answer).question)
       end
     end
   end

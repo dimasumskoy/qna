@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_answer, only: [:show]
+  before_action :set_answer, only: [:show, :destroy]
   before_action :set_question, only: [:new, :create]
 
   def index
@@ -16,11 +16,21 @@ class AnswersController < ApplicationController
 
   def create
     @answer = @question.answers.new(answer_params)
+    @answer.user = current_user
 
     if @answer.save
       redirect_to question_path(@question)
     else
-      render :new
+      render 'questions/show'
+    end
+  end
+
+  def destroy
+    if current_user.answers.include?(@answer)
+      @answer.destroy
+      redirect_to @answer.question
+    else
+      redirect_to @answer.question, notice: 'Answer was not deleted'
     end
   end
 

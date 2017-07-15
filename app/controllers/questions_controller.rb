@@ -28,7 +28,7 @@ class QuestionsController < ApplicationController
       @question.destroy
       redirect_to questions_path, notice: 'Question successfully deleted.'
     else
-      redirect_to questions_path
+      redirect_to question_path(@question)
     end
   end
 
