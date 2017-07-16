@@ -32,7 +32,6 @@ feature 'Create question', %q{
     visit new_question_path
 
     click_on 'Create'
-    save_and_open_page
     expect(page).to have_content "Title can't be blank"
     expect(page).to have_content "Body can't be blank"
   end
