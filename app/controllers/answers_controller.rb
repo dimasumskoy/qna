@@ -10,7 +10,7 @@ class AnswersController < ApplicationController
   end
 
   def new
-    @answer = @question.answers.build
+    @answer = current_user.answers.new
   end
 
   def create

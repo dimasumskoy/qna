@@ -22,12 +22,16 @@ RSpec.describe AnswersController, type: :controller do
 
     before { get :new, params: { question_id: question } }
 
-    it 'assigns the requested question to @question' do
+    it 'assigns the new question to @question' do
       expect(assigns(:question)).to eq question
     end
 
     it 'assigns the new answer to @answer' do
       expect(assigns(:answer)).to be_a_new(Answer)
+    end
+
+    it 'assigns the new answer for current user' do
+      expect(assigns(:answer).user).to eq @user
     end
 
     it 'renders new view' do
@@ -48,6 +52,10 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'saves the answer to question in db' do
         expect { valid_answer_attributes }.to change(question.answers, :count).by(1)
+      end
+
+      it 'saves the answer for current user' do
+        expect { valid_answer_attributes }.to change(@user.answers, :count).by(1)
       end
 
       it 'redirects to question show view' do

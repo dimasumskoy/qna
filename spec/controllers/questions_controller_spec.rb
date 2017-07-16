@@ -33,8 +33,12 @@ RSpec.describe QuestionsController, type: :controller do
 
     before { get :new }
 
-    it 'assigns new question to @question' do
+    it 'assigns the new question to @question' do
       expect(assigns(:question)).to be_a_new(Question)
+    end
+
+    it 'assigns the new question for current user' do
+      expect(assigns(:question).user).to eq @user
     end
 
     it 'renders new view' do
@@ -46,10 +50,10 @@ RSpec.describe QuestionsController, type: :controller do
     user_sign_in
     
     context 'with valid attributes' do
-      let(:valid_question_params) { post :create, params: { question: attributes_for(:question), user: @user } }
+      let(:valid_question_params) { post :create, params: { question: attributes_for(:question) } }
 
-      it 'saves the new question in db' do
-        expect { valid_question_params }.to change(Question, :count).by(1)
+      it 'saves the new question in db for current user' do
+        expect { valid_question_params }.to change(@user.questions, :count).by(1)
       end
 
       it 'renders show view' do
@@ -95,7 +99,7 @@ RSpec.describe QuestionsController, type: :controller do
       let!(:not_user_question) { create(:question, user: user) }
       let(:not_deleted_question) { delete :destroy, params: { id: not_user_question } }
 
-      it 'can not delete the question from db' do
+      it 'cannot delete the question from db' do
         expect { not_deleted_question }.to_not change(Question, :count)
       end
 
