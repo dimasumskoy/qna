@@ -1,9 +1,9 @@
 FactoryGirl.define do
   factory :answer do
-    body 'answer body'
-  end
+    sequence(:body) { |n| "body for #{n} answer" }
 
-  factory :invalid_answer, class: 'Answer' do
-    body nil
+    factory :invalid_answer do
+      body nil
+    end
   end
 end
