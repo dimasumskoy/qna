@@ -21,10 +21,12 @@ feature 'Delete answer', %q{
     other_user = create(:user)
     sign_in(other_user)
 
-    check_without_deleting_answer(question)
+    visit question_path(question)
+    expect(page).to_not have_link 'Delete answer'
   end
 
   scenario 'Unauthorized user can not delete any answer' do
-    check_without_deleting_answer(question)
+    visit question_path(question)
+    expect(page).to_not have_link 'Delete answer'
   end
 end
