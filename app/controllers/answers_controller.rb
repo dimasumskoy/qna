@@ -25,7 +25,7 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    if current_user.answers.include?(@answer)
+    if current_user.author_of?(@answer)
       @answer.destroy
       redirect_to @answer.question
     else
