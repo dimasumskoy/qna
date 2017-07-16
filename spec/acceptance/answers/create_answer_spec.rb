@@ -7,22 +7,29 @@ feature 'Write an answer to the question', %q{
 } do
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
-  given!(:answer) { create(:answer, question: question, user: user) }
 
   scenario 'Authorized user tries to write an answer' do
     sign_in(user)
-    check_question_body(question)
+    visit question_path(question)
 
-    fill_in 'Body', with: answer.body
+    fill_in 'Body', with: 'Answer body'
     click_on 'Reply'
-    expect(page).to have_content answer.body
+    expect(page).to have_content 'Answer body'
   end
 
   scenario 'Non-authorized user tries to write an answer' do
-    check_question_body(question)
+    visit question_path(question)
     
     fill_in 'Body', with: 'Answer body'
     click_on 'Reply'
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
+  end
+
+  scenario 'Errors appearance for invalid answer' do
+    sign_in(user)
+    visit question_path(question)
+
+    click_on 'Reply'
+    expect(page).to have_content 'Some errors occurred'
   end
 end
