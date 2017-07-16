@@ -26,4 +26,12 @@ feature 'Create question', %q{
     click_on 'Ask question'
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
+
+  scenario 'Errors appearance for invalid question' do
+    sign_in(user)
+    visit new_question_path
+
+    click_on 'Create'
+    expect(page).to have_content 'Some errors occurred'
+  end
 end
