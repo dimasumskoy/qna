@@ -50,17 +50,12 @@ RSpec.describe AnswersController, type: :controller do
         expect(assigns(:question)).to eq question
       end
 
-      it 'saves the answer to question in db' do
-        expect { valid_answer_attributes }.to change(question.answers, :count).by(1)
-      end
-
       it 'saves the answer for current user' do
         expect { valid_answer_attributes }.to change(@user.answers, :count).by(1)
       end
 
-      it 'redirects to question show view' do
-        valid_answer_attributes
-        expect(response).to redirect_to question_path(assigns(:question))
+      it 'saves the answer to question in db' do
+        expect { valid_answer_attributes }.to change(question.answers, :count).by(1)
       end
     end
 
@@ -69,11 +64,6 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'does not save the answer to question in db' do
         expect { invalid_answer_attributes }.to_not change(Answer, :count)
-      end
-
-      it 're-renders new view' do
-        invalid_answer_attributes
-        expect(response).to render_template 'questions/show'
       end
     end
   end

@@ -8,7 +8,7 @@ feature 'Write an answer to the question', %q{
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
 
-  scenario 'Authorized user tries to write an answer' do
+  scenario 'Authorized user tries to write an answer', js: true do
     sign_in(user)
     visit question_path(question)
 
