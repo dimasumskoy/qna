@@ -12,9 +12,9 @@ RSpec.describe AnswersController, type: :controller do
       expect(assigns(:answer)).to eq answer
     end
 
-    it 'renders show view' do
-      expect(response).to render_template :show
-    end
+    it 'renders show view' do 
+      expect(response).to render_template :show 
+    end 
   end
 
   describe 'GET #new' do
@@ -34,8 +34,8 @@ RSpec.describe AnswersController, type: :controller do
       expect(assigns(:answer).user).to eq @user
     end
 
-    it 'renders new view' do
-      expect(response).to render_template :new
+    it 'renders new view' do 
+      expect(response).to render_template :new 
     end
   end
 
