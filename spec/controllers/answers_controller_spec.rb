@@ -43,7 +43,7 @@ RSpec.describe AnswersController, type: :controller do
     user_sign_in
     
     context 'with valid attributes' do
-      let(:valid_answer_attributes) { post :create, params: { answer: attributes_for(:answer), question_id: question } }
+      let(:valid_answer_attributes) { post :create, params: { answer: attributes_for(:answer), question_id: question, format: :js } }
 
       it 'assigns the requested question to @question' do
         valid_answer_attributes
@@ -57,13 +57,23 @@ RSpec.describe AnswersController, type: :controller do
       it 'saves the answer to question in db' do
         expect { valid_answer_attributes }.to change(question.answers, :count).by(1)
       end
+
+      it 'renders create template' do
+        valid_answer_attributes
+        expect(response).to render_template :create
+      end
     end
 
     context 'with invalid attributes' do
-      let(:invalid_answer_attributes) { post :create, params: { answer: attributes_for(:invalid_answer), question_id: question } }
+      let(:invalid_answer_attributes) { post :create, params: { answer: attributes_for(:invalid_answer), question_id: question, format: :js } }
 
       it 'does not save the answer to question in db' do
         expect { invalid_answer_attributes }.to_not change(Answer, :count)
+      end
+
+      it 'renders create template' do
+        invalid_answer_attributes
+        expect(response).to render_template :create
       end
     end
   end

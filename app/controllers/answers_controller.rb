@@ -17,7 +17,6 @@ class AnswersController < ApplicationController
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
     @answer.save
-    redirect_to question_path(@question)
   end
 
   def destroy

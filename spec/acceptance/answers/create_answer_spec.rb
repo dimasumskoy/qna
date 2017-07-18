@@ -6,7 +6,7 @@ feature 'Write an answer to the question', %q{
   I want to be able to write an answer
 } do
   given(:user) { create(:user) }
-  given(:question) { create(:question, user: user) }
+  given!(:question) { create(:question, user: user) }
 
   scenario 'Authorized user tries to write an answer', js: true do
     sign_in(user)
@@ -17,7 +17,8 @@ feature 'Write an answer to the question', %q{
     expect(page).to have_content 'Answer body'
   end
 
-  scenario 'Non-authorized user tries to write an answer' do
+  scenario 'Non-authorized user tries to write an answer', js: true do
+    visit questions_path
     visit question_path(question)
     
     fill_in 'Body', with: 'Answer body'
@@ -25,7 +26,7 @@ feature 'Write an answer to the question', %q{
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 
-  scenario 'Errors appearance for invalid answer' do
+  scenario 'Errors appearance for invalid answer', js: true do
     sign_in(user)
     visit question_path(question)
 
