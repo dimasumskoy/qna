@@ -2,11 +2,11 @@ h2= @question.title
 p= @question.body
 
 - if user_signed_in? && current_user.author_of?(@question)
-  p= link_to 'Delete this question', question_path(@question), method: :delete, data: { confirm: 'Are you sure?' }
+  p= link_to 'Delete this question', @question, method: :delete, data: { confirm: 'Are you sure?' }
 
 h3 Answers
 .answer_list
-  = render 'questions/answer_list'
+  = render @question.answers
 
 h3 Write an answer
 .answer_field
