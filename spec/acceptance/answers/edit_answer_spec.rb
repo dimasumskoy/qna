@@ -9,7 +9,7 @@ feature 'Edit answer', %q{
   given!(:question) { create(:question) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
-  scenario 'Authorized user tries to edit his answer' do
+  scenario 'Authorized user tries to edit his answer', js: true do
     sign_in(user)
     visit question_path(question)
 
