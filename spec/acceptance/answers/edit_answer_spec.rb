@@ -6,6 +6,7 @@ feature 'Edit answer', %q{
   I want to be able to edit my answer
 } do
   given(:user) { create(:user) }
+  given(:other_user) { create(:user) }
   given!(:question) { create(:question) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
@@ -24,6 +25,21 @@ feature 'Edit answer', %q{
       expect(page).to have_content 'edited answer'
     end
   end
-  scenario 'Authorized user tries to edit NOT his answer'
-  scenario 'Unauthorized user tries to edit an answer'
+
+  scenario 'Authorized user tries to edit NOT his answer' do
+    sign_in(other_user)
+    visit question_path(question)
+
+    within '.answer_list' do
+      expect(page).to_not have_link 'Edit'
+    end
+  end
+
+  scenario 'Unauthorized user tries to edit an answer' do
+    visit question_path(question)
+
+    within '.answer_list' do
+      expect(page).to_not have_link 'Edit'
+    end
+  end
 end
