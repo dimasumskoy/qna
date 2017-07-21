@@ -19,12 +19,13 @@ feature 'Edit question', %q{
       fill_in 'Title', with: 'Edited title'
       fill_in 'Body', with: 'Edited body'
       click_on 'Save'
-    end
-    expect(page).to_not have_content question.title
-    expect(page).to_not have_content question.body
 
-    expect(page).to have_content 'Edited title'
-    expect(page).to have_content 'Edited body'
+      expect(page).to_not have_content question.title
+      expect(page).to_not have_content question.body
+
+      expect(page).to have_content 'Edited title'
+      expect(page).to have_content 'Edited body'
+    end
   end
   scenario 'Authorized user tries to edit someone else question'
   scenario 'Unauthorized user tries to edit the question' do
