@@ -76,6 +76,25 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'PATCH #update' do
+    context 'authorized user changes his question' do
+      user_sign_in
+
+      let(:user) { create(:user) }
+      let!(:question) { create(:question, user: user) }
+      let(:question_changes) { patch :update, params: { question: { title: 'edited title', body: 'edited body' } } }
+
+      it 'assigns the requested question to @question' do
+        question_changes
+        expect(assigns(:question)).to eq question
+      end
+    end
+
+    context 'authorized user changes NOT his question' do
+
+    end
+  end
+
   describe 'DELETE #destroy' do
     context 'authorized user deletes his question' do
       user_sign_in
