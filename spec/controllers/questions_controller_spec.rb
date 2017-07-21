@@ -98,6 +98,22 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to render_template :update
       end
     end
+
+    context 'authorized user changes NOT his question' do
+      user_sign_in
+
+      it 'does not change attributes of question' do
+        patch :update, params: { question: { title: 'edited title', body: 'edited body' }, id: question, format: :js }
+        question.reload
+        expect(question.title).to eq question.title
+        expect(question.body).to eq question.body
+      end
+
+      it 'renders update template' do
+        patch :update, params: { question: attributes_for(:question), id: question }, format: :js
+        expect(response).to render_template :update
+      end
+    end
   end
 
   describe 'DELETE #destroy' do
