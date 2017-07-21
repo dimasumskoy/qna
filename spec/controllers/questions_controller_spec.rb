@@ -79,10 +79,7 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'PATCH #update' do
     context 'authorized user changes his question' do
       user_sign_in
-
-      let(:user) { create(:user) }
-      let!(:question) { create(:question, user: user) }
-      # let(:question_changes) { patch :update, params: { question: { title: 'edited title', body: 'edited body' } } }
+      let(:question) { create(:question, user: @user) }
 
       it 'assigns the requested question to @question' do
         patch :update, params: { question: attributes_for(:question), id: question }, format: :js
@@ -96,7 +93,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.body).to eq 'edited body'
       end
 
-      it 'renders update template' do
+      it 're-renders update template' do
         patch :update, params: { question: attributes_for(:question), id: question }, format: :js
         expect(response).to render_template :update
       end

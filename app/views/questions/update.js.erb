@@ -1,1 +1,7 @@
-$('.question').html("<%= render @question %>");
+<% if @question.errors.any? %>
+  <% @question.errors.full_messages.each do |message| %>
+    $('.question').append("<%= j message %>");
+  <% end %>
+<% else %>
+  $('.question').html("<%= j render @question %>");
+<% end %>

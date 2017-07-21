@@ -6,6 +6,7 @@ feature 'Edit question', %q{
   I want to be able to edit my question
 } do
   given(:user) { create(:user) }
+  given(:other_user) { create(:user) }
   given!(:question) { create(:question, user: user) }
 
   scenario 'Authorized user tries to edit his question', js: true do
@@ -27,10 +28,18 @@ feature 'Edit question', %q{
       expect(page).to have_content 'Edited body'
     end
   end
-  scenario 'Authorized user tries to edit someone else question'
-  scenario 'Unauthorized user tries to edit the question' do
+
+  scenario 'Authorized user tries to edit someone else question' do
+    sign_in(other_user)
     visit question_path(question)
 
+    within '.question' do
+      expect(page).to_not have_link 'Edit'
+    end
+  end
+
+  scenario 'Unauthorized user tries to edit the question' do
+    visit question_path(question)
     expect(page).to_not have_link 'Edit'
   end
 end

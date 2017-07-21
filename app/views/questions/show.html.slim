@@ -1,20 +1,5 @@
 .question
-  h2= @question.title
-  p= @question.body
-  p
-    = form_for @question, remote: true do |f|
-      p
-        = f.label :title
-        = f.text_field :title
-      p
-        = f.label :body
-        = f.text_area :body
-      p
-        = f.submit 'Save'
-
-- if user_signed_in? && current_user.author_of?(@question)
-  p= link_to 'Delete this question', @question, method: :delete, data: { confirm: 'Are you sure?' }
-  p= link_to 'Edit'
+  = render @question if @question.persisted?
 
 h3 Answers
 .answer_list
@@ -25,6 +10,6 @@ h3 Write an answer
 = form_for [@question, @answer], remote: true do |f|
   = render 'common/errors', resource: @answer
 
-  = f.label :body, 'Answer'
-  = f.text_area :body
-  = f.submit 'Reply'
+  p= f.label :body, 'Answer'
+  p= f.text_area :body
+  p= f.submit 'Reply'
