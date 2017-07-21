@@ -8,7 +8,7 @@ feature 'Edit question', %q{
   given(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
 
-  scenario 'Authorized user tries to edit his question' do
+  scenario 'Authorized user tries to edit his question', js: true do
     sign_in(user)
     visit question_path(question)
     expect(page).to have_link 'Edit'

@@ -12,7 +12,7 @@ feature 'Write an answer to the question', %q{
     sign_in(user)
     visit question_path(question)
 
-    fill_in 'Body', with: 'Answer body'
+    fill_in 'Answer', with: 'Answer body'
     click_on 'Reply'
     expect(page).to have_content 'Answer body'
   end
@@ -21,7 +21,7 @@ feature 'Write an answer to the question', %q{
     visit questions_path
     visit question_path(question)
     
-    fill_in 'Body', with: 'Answer body'
+    fill_in 'Answer', with: 'Answer body'
     click_on 'Reply'
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
