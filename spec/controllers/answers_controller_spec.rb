@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
-  let!(:answer) { create(:answer, question: question, user: user) }
+  let(:answer) { create(:answer, question: question, user: user) }
 
   describe 'GET #show' do
     before { get :show, params: { id: answer } }
@@ -75,6 +75,38 @@ RSpec.describe AnswersController, type: :controller do
         invalid_answer_attributes
         expect(response).to render_template :create
       end
+    end
+  end
+
+  describe 'PATCH #update' do
+    context 'authorized user tries to change his answer' do
+      user_sign_in
+      let!(:user_answer) { create(:answer, question: question, user: @user) }
+
+      it 'assigns the requested question to @question' do
+        patch :update, params: { answer: attributes_for(:answer), id: user_answer, question_id: question, format: :js }
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'assigns the requested answer to @answer' do
+        patch :update, params: { answer: attributes_for(:answer), id: user_answer, question_id: question, format: :js }
+        expect(assigns(:answer)).to eq user_answer
+      end
+
+      it 'changes the answer attributes and saves it in db' do
+        patch :update, params: { answer: { body: 'edited body' }, id: user_answer, question_id: question, format: :js }
+        user_answer.reload
+        expect(user_answer.body).to eq 'edited body'
+      end
+
+      it 'renders update template' do
+        patch :update, params: { answer: attributes_for(:answer), id: user_answer, question_id: question, format: :js }
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'authorized user tries to change NOT his answer' do
+
     end
   end
 
