@@ -163,7 +163,13 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     it 'adds the best answer mark to requested answer' do
-      
+      patch :best, params: { answer: attributes_for(:answer), question: question, format: :js }
+      expect(answer.best?).to be_truthy
+    end
+
+    it 'renders best action template' do
+      patch :best, params: { answer: attributes_for(:answer), question: question, format: :js }
+      expect(response).to render_template :best
     end
   end
 end

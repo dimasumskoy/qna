@@ -1,7 +1,7 @@
 - if answer.persisted?
 div class="answer-#{answer.id}"
   p= answer.body
-  - if current_user.author_of?(@question)
+  - if user_signed_in? && current_user.author_of?(answer.question)
     p= link_to 'Best answer', '', class: 'best-answer-link', remote: true
 
 - if user_signed_in? && current_user.author_of?(answer)
