@@ -21,15 +21,17 @@ class AnswersController < ApplicationController
 
   def update
     @question = @answer.question
-    @answer.update(answer_params)
+
+    if current_user.author_of?(@answer)
+      @answer.update(answer_params)
+    else
+      render :update
+    end
   end
 
   def destroy
     if current_user.author_of?(@answer)
       @answer.destroy
-      redirect_to @answer.question
-    else
-      redirect_to @answer.question, notice: 'Answer was not deleted'
     end
   end
 

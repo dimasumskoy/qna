@@ -115,13 +115,18 @@ RSpec.describe AnswersController, type: :controller do
       user_sign_in
       let!(:user_answer) { create(:answer, question: question, user: @user) }
 
-      it 'deletes the answer from db' do
-        expect { delete :destroy, params: { id: user_answer } }.to change(Answer, :count).by(-1)
+      it 'assigns requested answer to @answer' do
+        delete :destroy, params: { id: user_answer, format: :js }
+        expect(assigns(:answer)).to eq user_answer
       end
 
-      it 'redirects to answer question' do
-        delete :destroy, params: { id: user_answer }
-        expect(response).to redirect_to (assigns(:answer).question)
+      it 'deletes the answer from db' do
+        expect { delete :destroy, params: { id: user_answer, format: :js } }.to change(Answer, :count).by(-1)
+      end
+
+      it 'renders destroy template' do
+        delete :destroy, params: { id: user_answer, format: :js }
+        expect(response).to render_template :destroy
       end
     end
 
@@ -130,12 +135,12 @@ RSpec.describe AnswersController, type: :controller do
       let!(:not_user_answer) { create(:answer, question: question, user: user) }
 
       it 'does not deletes the answer from db' do
-        expect { delete :destroy, params: { id: not_user_answer } }.to_not change(Answer, :count)
+        expect { delete :destroy, params: { id: not_user_answer, format: :js } }.to_not change(Answer, :count)
       end
 
-      it 'redirects to answer question' do
-        delete :destroy, params: { id: not_user_answer }
-        expect(response).to redirect_to (assigns(:answer).question)
+      it 're-renders destroy template' do
+        delete :destroy, params: { id: not_user_answer, format: :js }
+        expect(response).to render_template :destroy
       end
     end
   end
