@@ -106,12 +106,18 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'authorized user tries to change NOT his answer' do
+      user_sign_in
+      let!(:not_user_answer) { create(:answer, question: question, user: user) }
 
+      it 'does not changes answer attributes and save it in db' do
+        patch :update, params: { answer: attributes_for(:answer), id: not_user_answer, question_id: question, format: :js }
+        expect(not_user_answer.body).to eq not_user_answer.body
+      end
     end
   end
 
   describe 'DELETE #destroy' do
-    context 'authorized user deletes his answer' do
+    context 'authorized user tries to delete his answer' do
       user_sign_in
       let!(:user_answer) { create(:answer, question: question, user: @user) }
 
@@ -130,7 +136,7 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    context 'authorized user deletes NOT his answer' do
+    context 'authorized user tries to delete NOT his answer' do
       user_sign_in
       let!(:not_user_answer) { create(:answer, question: question, user: user) }
 
@@ -142,6 +148,22 @@ RSpec.describe AnswersController, type: :controller do
         delete :destroy, params: { id: not_user_answer, format: :js }
         expect(response).to render_template :destroy
       end
+    end
+  end
+
+  describe 'PATCH #best' do
+    user_sign_in
+    let(:other_user) { create(:user) }
+    let(:question) { create(:question, user: @user) }
+    let!(:answer) { create(:answer, question: question, user: other_user) }
+
+    it 'assigns the requested answer to @answer' do
+      patch :best, params: { answer: attributes_for(:answer), question: question, format: :js }
+      expect(assigns(:answer)).to eq answer
+    end
+
+    it 'adds the best answer mark to requested answer' do
+      
     end
   end
 end

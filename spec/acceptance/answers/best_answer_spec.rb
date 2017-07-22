@@ -15,11 +15,8 @@ feature 'Best answer', %q{
     visit question_path(question)
 
     expect(page).to have_content answer.body
-    expect(page).to have_link 'Best answer'
-
-    click_on 'Best answer'
-
-    within '.answet_list' do
+    within ".answer-#{answer.id}" do
+      click_on 'Best answer'
       expect(page).to have_selector '.best-answer'
     end
   end
