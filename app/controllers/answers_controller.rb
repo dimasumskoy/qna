@@ -30,8 +30,11 @@ class AnswersController < ApplicationController
   end
 
   def destroy
+    @question = @answer.question
     if current_user.author_of?(@answer)
       @answer.destroy
+    else
+      flash[:notice] = 'You cannot delete this answer'
     end
   end
 
