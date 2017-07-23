@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_answer, only: [:show, :destroy, :update]
+  before_action :set_answer, only: [:show, :destroy, :update, :best]
   before_action :set_question, only: [:new, :create]
 
   def index
@@ -35,6 +35,14 @@ class AnswersController < ApplicationController
       @answer.destroy
     else
       flash[:notice] = 'You cannot delete this answer'
+    end
+  end
+
+  def best
+    if current_user.author_of?(@answer.question)
+      @answer.best!
+    else
+      render :best
     end
   end
 
