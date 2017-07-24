@@ -153,23 +153,34 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'PATCH #best' do
     user_sign_in
-    let(:other_user) { create(:user) }
-    let(:question) { create(:question, user: @user) }
-    let!(:answer) { create(:answer, question: question, user: other_user) }
+    let(:user_question) { create(:question, user: @user) }
 
-    it 'assigns the requested answer to @answer' do
-      patch :best, params: { answer: attributes_for(:answer), question: question, format: :js }
-      expect(assigns(:answer)).to eq answer
+    context 'author of the question marks the answer as best' do
+      let!(:answer) { create(:answer, question: user_question, user: user) }
+
+      it 'assigns the requested answer to @answer' do
+        patch :best, params: { id: answer, format: :js }
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'adds the best answer mark to @answer' do
+        patch :best, params: { id: answer, format: :js }
+        expect(assigns(:answer)).to be_best
+      end
+
+      it 'renders best action template' do
+        patch :best, params: { id: answer, format: :js }
+        expect(response).to render_template :best
+      end
     end
 
-    it 'adds the best answer mark to requested answer' do
-      patch :best, params: { answer: attributes_for(:answer), question: question, format: :js }
-      expect(answer.best?).to be_truthy
-    end
+    context 'other user tries to mark answer as best' do
+      let!(:answer) { create(:answer, question: question, user: user) }
 
-    it 'renders best action template' do
-      patch :best, params: { answer: attributes_for(:answer), question: question, format: :js }
-      expect(response).to render_template :best
+      it 'does not marks the answer as best' do
+        patch :best, params: { id: answer, format: :js }
+        expect(assigns(:answer)).to_not be_best
+      end
     end
   end
 end
