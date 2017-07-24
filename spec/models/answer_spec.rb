@@ -20,4 +20,11 @@ RSpec.describe Answer, type: :model do
       expect(answer.best?).to be_falsey
     end
   end
+
+  context '.ordered' do
+    it 'orders the list of answers by best' do
+      Answer.last.best!
+      expect(Answer.ordered.first.best?).to eq true
+    end
+  end
 end

@@ -1,5 +1,7 @@
 - if answer.persisted?
   div class="answer-#{answer.id}"
+    - if answer.best?
+      p.best-answer Best answer
     p= answer.body
     - if current_user&.author_of?(answer.question)
       p= link_to 'Best answer', best_answer_path(answer), remote: true, method: :patch, class: 'best-answer-link'
