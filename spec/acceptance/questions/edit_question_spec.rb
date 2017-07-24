@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance/acceptance_helper'
 
 feature 'Edit question', %q{
   In order to amend the question
@@ -29,7 +29,7 @@ feature 'Edit question', %q{
     end
   end
 
-  scenario 'Authorized user tries to edit NOT his question' do
+  scenario 'Authorized user tries to edit NOT his question', js: true do
     sign_in(other_user)
     visit question_path(question)
 
@@ -38,7 +38,7 @@ feature 'Edit question', %q{
     end
   end
 
-  scenario 'Unauthorized user tries to edit a question' do
+  scenario 'Unauthorized user tries to edit a question', js: true do
     visit question_path(question)
     expect(page).to_not have_link 'Edit'
   end

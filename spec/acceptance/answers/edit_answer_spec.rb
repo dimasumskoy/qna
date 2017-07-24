@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance/acceptance_helper'
 
 feature 'Edit answer', %q{
   In order to fix or amend the text of an answer
@@ -26,7 +26,7 @@ feature 'Edit answer', %q{
     end
   end
 
-  scenario 'Authorized user tries to edit NOT his answer' do
+  scenario 'Authorized user tries to edit NOT his answer', js: true do
     sign_in(other_user)
     visit question_path(question)
 
@@ -35,7 +35,7 @@ feature 'Edit answer', %q{
     end
   end
 
-  scenario 'Unauthorized user tries to edit an answer' do
+  scenario 'Unauthorized user tries to edit an answer', js: true do
     visit question_path(question)
 
     within '.answer_list' do

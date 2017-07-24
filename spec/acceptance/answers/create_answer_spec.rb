@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance/acceptance_helper'
 
 feature 'Write an answer to the question', %q{
   In order to help with the question
@@ -18,7 +18,6 @@ feature 'Write an answer to the question', %q{
   end
 
   scenario 'Non-authorized user tries to write an answer', js: true do
-    visit questions_path
     visit question_path(question)
     
     fill_in 'Answer', with: 'Answer body'
