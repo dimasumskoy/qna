@@ -1,10 +1,10 @@
 = form_for @question do |f|
   = render 'common/errors', resource: @question
   p= f.label :title
-  p= f.text_field :title
+  p= f.text_field :title, class: 'form-control'
   p= f.label :body
-  p= f.text_area :body
+  p= f.text_area :body, class: 'form-control'
   
-  p= f.submit 'Create'
+  p= f.submit 'Create', class: 'btn btn-default'
 
 p= link_to 'Back', questions_path

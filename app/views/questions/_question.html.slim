@@ -7,9 +7,9 @@ p= question.body
 
   p= form_for question, html: { id: "edit-question-#{question.id}" }, remote: true do |f|
     p= f.label :title
-    p= f.text_field :title
+    p= f.text_field :title, class: 'form-control'
 
     p= f.label :body
-    p= f.text_area :body
+    p= f.text_area :body, class: 'form-control'
 
-    p= f.submit 'Save'
+    p= f.submit 'Save', class: 'btn btn-default'
