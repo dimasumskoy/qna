@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance/acceptance_helper'
 
 feature 'Delete answer', %q{
   In order to hide the answer from the question page
@@ -9,7 +9,7 @@ feature 'Delete answer', %q{
   given(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
-  scenario 'Authorized user tries to delete his answer' do
+  scenario 'Authorized user tries to delete his answer', js: true do
     sign_in(user)
 
     visit question_path(question)

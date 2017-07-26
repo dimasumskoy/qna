@@ -76,6 +76,46 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'PATCH #update' do
+    context 'authorized user changes his question' do
+      user_sign_in
+      let(:question) { create(:question, user: @user) }
+
+      it 'assigns the requested question to @question' do
+        patch :update, params: { question: attributes_for(:question), id: question }, format: :js
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'changes question attributes and saves it in db' do
+        patch :update, params: { question: { title: 'edited title', body: 'edited body' }, id: question, format: :js }
+        question.reload
+        expect(question.title).to eq 'edited title'
+        expect(question.body).to eq 'edited body'
+      end
+
+      it 're-renders update template' do
+        patch :update, params: { question: attributes_for(:question), id: question }, format: :js
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'authorized user changes NOT his question' do
+      user_sign_in
+
+      it 'does not change attributes of question' do
+        patch :update, params: { question: { title: 'edited title', body: 'edited body' }, id: question, format: :js }
+        question.reload
+        expect(question.title).to eq question.title
+        expect(question.body).to eq question.body
+      end
+
+      it 'renders update template' do
+        patch :update, params: { question: attributes_for(:question), id: question }, format: :js
+        expect(response).to render_template :update
+      end
+    end
+  end
+
   describe 'DELETE #destroy' do
     context 'authorized user deletes his question' do
       user_sign_in

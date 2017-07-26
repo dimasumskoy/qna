@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance/acceptance_helper'
 
 feature 'List all question answers', %q{
   In order to find the right answer to the question

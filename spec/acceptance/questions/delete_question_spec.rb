@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'acceptance/acceptance_helper'
 
 feature 'Delete question', %q{
   In order to hide the question from the list of all questions

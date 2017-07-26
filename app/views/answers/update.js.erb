@@ -3,6 +3,5 @@
     $('.answer_list').append('<%= j message %>');
   <% end %>
 <% else %>
-  $('.answer_list').append('<%= j render @answer %>');
-  $('form#new_answer #answer_body').val('');
+  $('.answer-<%= @answer.id %>').html('<%= j render @answer %>');
 <% end %>
