@@ -1,5 +1,9 @@
 h2= question.title
 p= question.body
+p Attachments:
+ul
+- question.attachments.each do |attachment|
+  li= attachment.file.file.filename
 
 - if user_signed_in? && current_user.author_of?(question)
   p= link_to 'Delete this question', question, method: :delete, data: {confirm: 'Are you sure?'}

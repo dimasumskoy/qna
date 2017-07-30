@@ -1,0 +1,127 @@
+#!/bin/bash
+
+echo "INSTALL:"
+echo "sublime text (3) - 1"
+echo "chrome - 2"
+echo "pulseAudio - 3"
+echo "dconf Editor - 4"
+echo "rvm with ruby - 5"
+echo "rvm with rails - 6"
+echo "zsh - 7"
+echo "git - 8"
+echo "skype - 9"
+echo "gimp - 10"
+
+read choice
+
+if [[ $choice = 1 ]]
+then
+echo "Adding Sublime Text 3 to repo"
+  sudo add-apt-repository ppa:webupd8team/sublime-text-3
+echo "Updating"
+  sudo apt-get update
+echo "Installing Sublime Text 3"
+  sudo apt-get install sublime-text-installer
+exit
+fi
+
+if [[ $choice = 2 ]]
+then
+echo "Getting the key"
+  wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+echo "Adding Chrome to repo"
+  sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+echo "Updating"
+  sudo apt-get update
+echo "Installing chrome"
+  sudo apt-get install google-chrome-stable
+exit
+fi
+
+if [[ $choice = 3 ]]
+then
+echo "Adding to repo"
+  sudo add-apt-repository ppa:nilarimogard/webupd8
+echo "Updating"
+  sudo apt-get update
+echo "Installing PulseAudio Equalizer"
+  sudo apt-get install pulseaudio-equalizer
+exit
+fi
+
+if [[ $choice = 4 ]]
+then
+echo "Installing dconf Editor"
+  sudo apt-get install dconf-tools
+exit
+fi
+
+if [[ $choice = 5 ]]
+then
+echo "Installing RVM"
+  gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+echo "Updating"
+  sudo apt-get update
+echo "Installing RVM with Ruby"
+  \curl -sSL https://get.rvm.io | bash -s stable --ruby
+exit
+fi
+
+if [[ $choice = 6 ]]
+then
+echo "Installing RVM"
+  gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+echo "Updating"
+  sudo apt-get update
+echo "Installing RVM with Rails"
+  \curl -sSL https://get.rvm.io | bash -s stable --rails
+exit
+fi
+
+if [[ $choice = 7 ]]
+then
+echo "Installing ZSH"
+  sudo apt-get install zsh
+echo "Installing Oh My ZSH"
+  wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh
+echo "Adding zsh to system as default"
+  chsh -s /bin/zsh
+echo "Need to restart"
+exit
+fi
+
+if [[ $choice = 8 ]]
+then
+echo "Installing necessary libraries"
+  sudo apt-get install libcurl4-gnutls-dev libexpat1-dev gettext \
+  libz-dev libssl-dev
+echo "Updating"
+  sudo apt-get update
+echo "Installing Git"
+  sudo apt-get install git
+exit
+fi
+
+if [[ $choice = 9 ]]
+then
+echo "Adding repo"
+  sudo add-apt-repository "deb http://archive.canonical.com/ $(lsb_release -sc) partner"
+echo "Adding i386"
+  sudo dpkg --add-architecture i386
+echo "Updating"
+  sudo apt-get update
+echo "Installing Skype"
+  sudo apt install skype
+exit
+fi
+
+if [[ $choice = 10 ]]
+then
+echo "Adding repo"
+  sudo add-apt-repository ppa:otto-kesselgulasch/gimp
+echo "Updating"
+  sudo apt-get update
+echo "Installing GIMP"
+  sudo apt-get install gimp
+exit
+fi
