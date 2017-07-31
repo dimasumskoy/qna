@@ -9,7 +9,7 @@
     p Attachments:
     p= f.fields_for :attachments do |attachment|
       = render 'common/attachment_fields', f: attachment
-      p= link_to_add_association 'add file', f, :attachments, partial: 'common/attachment_fields'
+      p= link_to_add_association 'Add more files', f, :attachments, partial: 'common/attachment_fields'
 
   p= f.submit 'Create', class: 'btn btn-default'
 
