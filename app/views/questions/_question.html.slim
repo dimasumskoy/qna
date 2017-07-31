@@ -5,9 +5,9 @@ p= question.body
   p Attachments:
   ul
   - question.attachments.each do |a|
-    li
+    li class="attachment-#{a.id}"
       => link_to a.file.identifier, a.file.url
-      =< link_to 'delete'
+      =< link_to 'delete', a, method: :delete, remote: true, question: question
 
 - if user_signed_in? && current_user.author_of?(question)
   p= link_to 'Delete this question', question, method: :delete, data: {confirm: 'Are you sure?'}
