@@ -5,9 +5,7 @@
     p= answer.body
 
     - if answer.attachments.any?
-      p Attachments:
-      - answer.attachments.each do |a|
-        li= link_to a.file.identifier, a.file.url
+      = render 'common/attachments', resource: answer
 
     - if current_user&.author_of?(answer.question)
       p= link_to 'Best answer', best_answer_path(answer), remote: true, method: :patch, class: 'best-answer-link'

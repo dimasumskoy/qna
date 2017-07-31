@@ -2,12 +2,7 @@ h2= question.title
 p= question.body
 
 - if question.attachments.any?
-  p Attachments:
-  ul
-  - question.attachments.each do |a|
-    li class="attachment-#{a.id}"
-      => link_to a.file.identifier, a.file.url
-      =< link_to 'delete', a, method: :delete, remote: true, question: question
+  = render 'common/attachments', resource: question
 
 - if user_signed_in? && current_user.author_of?(question)
   p= link_to 'Delete this question', question, method: :delete, data: {confirm: 'Are you sure?'}
