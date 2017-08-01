@@ -11,6 +11,12 @@ h3 Write an answer
   = render 'common/errors', resource: @answer
   p= f.label :body, 'Answer'
   p= f.text_area :body, class: 'form-control'
+
+  p Attachments:
+  p= f.fields_for :attachments do |attachment|
+    = render 'common/attachment_fields', f: attachment
+    p= link_to_add_association 'Add more files', f, :attachments, partial: 'common/attachment_fields'
+
   p= f.submit 'Reply', class: 'btn btn-default'
 
 p= link_to 'Back', questions_path

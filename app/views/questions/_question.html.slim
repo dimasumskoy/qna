@@ -1,6 +1,9 @@
 h2= question.title
 p= question.body
 
+- if question.attachments.any?
+  = render 'common/attachments', resource: question
+
 - if user_signed_in? && current_user.author_of?(question)
   p= link_to 'Delete this question', question, method: :delete, data: {confirm: 'Are you sure?'}
   p= link_to 'Edit', '', class: 'edit-question-link', data: { question_id: question.id }
