@@ -8,6 +8,11 @@ Rails.application.routes.draw do
   end
 
   resources :attachments, only: [:destroy]
+  resources :votes, only: [:vote_up, :vote_down, :revote] do
+    post :vote_up, on: :collection
+    post :vote_down, on: :collection
+    post :revote, on: :collection
+  end
 
   root to: 'questions#index'
 end
