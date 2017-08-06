@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_question, only: [:show, :destroy, :update]
+  before_action :set_question, only: [:show, :destroy, :update, :vote_up]
 
   def index
     @questions = Question.all
@@ -40,6 +40,14 @@ class QuestionsController < ApplicationController
       redirect_to @question, notice: 'Question successfully deleted.'
     else
       redirect_to @question
+    end
+  end
+
+  def vote_up
+    @question.vote_up(current_user)
+
+    respond_to do |format|
+      format.json { render json: @question.votes.count_rating }
     end
   end
 

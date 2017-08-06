@@ -153,4 +153,19 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'POST #vote_up' do
+    context 'Authorized user votes up for the question' do
+      user_sign_in
+
+      it 'assigns the requested question to @question' do
+        patch :vote_up, params: { id: question, format: :json }
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'adds positive vote to the question' do
+        expect { patch :vote_up, params: { id: question, format: :json }}.to change(question.votes, :count).by(1)
+      end
+    end
+  end
 end

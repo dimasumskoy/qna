@@ -1,10 +1,19 @@
+.rating
+  - if question.votes.any?
+    p.current_rating
+      = question.votes.count_rating
+  - else
+    p 0
+  - unless current_user&.author_of?(question)
+    p= link_to '+1', vote_up_question_path(question), class: 'vote-up-question', method: :patch, remote: true, data: { type: :json }
+
 h2= question.title
 p= question.body
 
 - if question.attachments.any?
   = render 'common/attachments', resource: question
 
-- if user_signed_in? && current_user.author_of?(question)
+- if current_user&.author_of?(question)
   p= link_to 'Delete this question', question, method: :delete, data: {confirm: 'Are you sure?'}
   p= link_to 'Edit', '', class: 'edit-question-link', data: { question_id: question.id }
 
