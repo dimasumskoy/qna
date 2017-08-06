@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_question, only: [:show, :destroy, :update, :vote_up]
+  before_action :set_question, only: [:show, :destroy, :update, :vote_up, :vote_down]
 
   def index
     @questions = Question.all
@@ -45,6 +45,14 @@ class QuestionsController < ApplicationController
 
   def vote_up
     @question.vote_up(current_user)
+
+    respond_to do |format|
+      format.json { render json: @question.votes.count_rating }
+    end
+  end
+
+  def vote_down
+    @question.vote_down(current_user)
 
     respond_to do |format|
       format.json { render json: @question.votes.count_rating }

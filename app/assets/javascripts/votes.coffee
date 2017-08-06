@@ -3,6 +3,6 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $(document).on 'turbolinks:load', ->
-  $('a.vote-up-question').bind 'ajax:success', (e, data, status, xhr) ->
+  $('a.vote-up-question, a.vote-down-question').bind 'ajax:success', (e, data, status, xhr) ->
     rating = $.parseJSON(xhr.responseText)
     $('p.current_rating').html(rating)

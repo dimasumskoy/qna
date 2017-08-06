@@ -5,7 +5,11 @@
   - else
     p 0
   - unless current_user&.author_of?(question)
-    p= link_to '+1', vote_up_question_path(question), class: 'vote-up-question', method: :patch, remote: true, data: { type: :json }
+    p
+      => link_to '+1', vote_up_question_path(question), class: 'vote-up-question', method: :patch, remote: true, data: { type: :json }
+      |
+        /
+      =< link_to '-1', vote_down_question_path(question), class: 'vote-down-question', method: :patch, remote: true, data: { type: :json }
 
 h2= question.title
 p= question.body
