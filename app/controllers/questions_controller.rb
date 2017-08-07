@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_question, only: [:show, :destroy, :update, :vote_up, :vote_down]
+  before_action :set_question, only: [:show, :destroy, :update, :vote_up, :vote_down, :revote]
 
   def index
     @questions = Question.all
@@ -44,22 +44,31 @@ class QuestionsController < ApplicationController
   end
 
   def vote_up
-    @question.vote_up(current_user)
-
-    respond_to do |format|
-      format.json { render json: @question.votes.count_rating }
-    end
+    vote('vote_up')
   end
 
   def vote_down
-    @question.vote_down(current_user)
+    vote('vote_down')
+  end
 
-    respond_to do |format|
-      format.json { render json: @question.votes.count_rating }
+  def revote
+    if @question.voted?(current_user)
+      @question.revote(current_user)
+    else
+      render :show
     end
   end
 
   private
+
+  def vote(choice)
+    if @question.voted?(current_user) || current_user.author_of?(@question)
+      respond_to { |format| format.json { render json: t('vote_error'), status: :unprocessable_entity } }
+    else
+      @question.send(choice, current_user)
+      respond_to { |format| format.json { render json: @question.votes.count_rating } }
+    end
+  end
 
   def set_question
     @question = Question.find(params[:id])
