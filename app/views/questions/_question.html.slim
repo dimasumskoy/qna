@@ -1,8 +1,8 @@
 .rating
   - if question.votes.any?
-    p.current_rating
+    .current_rating
       = question.votes.count_rating
-      p.rating_errors
+      .rating_errors
   - else
     p 0
   - unless current_user&.author_of?(question)

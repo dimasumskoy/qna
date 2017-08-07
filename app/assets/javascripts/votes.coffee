@@ -9,6 +9,6 @@ $(document).on 'turbolinks:load', ->
 
   $('a.vote-up-question, a.vote-down-question').bind 'ajax:success', (e, data, status, xhr) ->
     rating = $.parseJSON(xhr.responseText)
-    $('p.current_rating').html(rating)
+    $('div.current_rating').html(rating)
   .bind 'ajax:error', (e, xhr, data, error) ->
-    $('p.rating_errors').html(xhr.responseText)
+    $('div.rating_errors').html(xhr.responseText)
