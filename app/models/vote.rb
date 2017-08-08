@@ -1,6 +1,7 @@
 class Vote < ApplicationRecord
   belongs_to :votable, polymorphic: true
 
+  validates :votable, :value, presence: true
   validates :votable_type, inclusion: %w(Question Answer)
   validates :user_id, uniqueness: { scope: [:votable_id, :votable_type] }
 
