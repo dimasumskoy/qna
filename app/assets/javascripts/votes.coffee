@@ -3,16 +3,17 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $(document).on 'turbolinks:load', ->
-  $(document).on 'click', 'a.revote-question', (e) ->
-    $(this).hide()
-  .bind 'ajax:success', (e, data, status, xhr) ->
-    rating = $.parseJSON(xhr.responseText)
-    $('div.current_rating').html(rating)
-
-  $(document).on 'click', 'a.vote-up-question, a.vote-down-question', (e) ->
-    $('.rating a.revote-question').show()
-    $(this).bind 'ajax:success', (e, data, status, xhr) ->
+  update_rating = (object) ->
+    object.bind 'ajax:success', (e, data, status, xhr) ->
       rating = $.parseJSON(xhr.responseText)
       $('div.current_rating').html(rating)
     .bind 'ajax:error', (e, xhr, data, error) ->
       $('div.rating_errors').html(xhr.responseText)
+
+  $(document).on 'click', 'a.vote-up-question, a.vote-down-question', (e) ->
+    update_rating($(this))
+    $('div.rating a.revote-question').show()
+
+  $(document).on 'click', 'a.revote-question', (e) ->
+    update_rating($(this))
+    $(this).hide()

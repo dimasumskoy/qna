@@ -36,6 +36,7 @@ gem 'rubocop', require: false
 gem 'slim-rails'
 gem 'devise'
 gem 'jquery-rails'
+gem 'jquery-turbolinks'
 
 gem 'therubyracer'
 gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
