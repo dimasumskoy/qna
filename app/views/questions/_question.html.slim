@@ -12,7 +12,8 @@
         /
       =< link_to '-1', vote_down_question_path(question), class: 'vote-down-question', method: :patch, remote: true, data: { type: :json }
     - if question.voted?(current_user)
-      p= link_to 'Revote', revote_question_path(question), class: 'revote-question', method: :patch, remote: true, data: { type: :json }
+      .revote
+        p= link_to 'Revote', revote_question_path(question), class: 'revote-question', method: :patch, remote: true, data: { type: :json }
 
 h2= question.title
 p= question.body

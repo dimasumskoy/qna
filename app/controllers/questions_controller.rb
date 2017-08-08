@@ -54,6 +54,8 @@ class QuestionsController < ApplicationController
   def revote
     if @question.voted?(current_user)
       @question.revote(current_user)
+
+      respond_to { |format| format.json { render json: @question.votes.count_rating } }
     else
       render :show
     end
