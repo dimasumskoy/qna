@@ -2,6 +2,8 @@
   div class="answer-#{answer.id}"
     - if answer.best?
       p.best-answer Best answer
+
+    = render 'common/rating', resource: answer
     p= answer.body
 
     - if answer.attachments.any?

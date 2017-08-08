@@ -1,19 +1,4 @@
-.rating
-  - if question.votes.any?
-    .current_rating
-      = question.votes.count_rating
-      .rating_errors
-  - else
-    p 0
-  - unless current_user&.author_of?(question)
-    p
-      => link_to '+1', vote_up_question_path(question), class: 'vote-up-question', method: :patch, remote: true, data: { type: :json }
-      |
-        /
-      =< link_to '-1', vote_down_question_path(question), class: 'vote-down-question', method: :patch, remote: true, data: { type: :json }
-    - if question.voted?(current_user)
-      .revote
-        p= link_to 'Revote', revote_question_path(question), class: 'revote-question', method: :patch, remote: true, data: { type: :json }
+= render 'common/rating', resource: question
 
 h2= question.title
 p= question.body
