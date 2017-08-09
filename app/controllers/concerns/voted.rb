@@ -20,7 +20,7 @@ module Voted
 
       respond_to { |format| format.json { render json: @votable } }
     else
-      render :show
+      respond_to { |format| format.json { render text: t('vote_error', resource: @votable.to_string.singularize), status: :unprocessable_entity } }
     end
   end
 
@@ -28,7 +28,7 @@ module Voted
 
   def vote(choice)
     if @votable.voted?(current_user) || current_user.author_of?(@votable)
-      respond_to { |format| format.json { render json: t('vote_error'), status: :unprocessable_entity } }
+      respond_to { |format| format.json { render json: t('vote_error', resource: @votable.to_string.singularize), status: :unprocessable_entity } }
     else
       @votable.send(choice, current_user)
       respond_to { |format| format.json { render json: @votable } }

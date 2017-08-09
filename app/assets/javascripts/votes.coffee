@@ -10,7 +10,7 @@ $(document).on 'turbolinks:load', ->
       votablePath = 'div#rating-' + votableKlass + '-' + votable.id
       $(votablePath + ' ' + '.current_rating').html(votable.rating)
     .bind 'ajax:error', (e, xhr, data, error) ->
-      $('.rating_errors').html(xhr.responseText)
+      alert(xhr.responseText)
 
   $(document).on 'click', 'a.vote-up, a.vote-down', (e) ->
     update_rating($(this))
