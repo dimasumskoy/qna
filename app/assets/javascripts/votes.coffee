@@ -6,13 +6,15 @@ $(document).on 'turbolinks:load', ->
   update_rating = (object) ->
     object.bind 'ajax:success', (e, data, status, xhr) ->
       votable = $.parseJSON(xhr.responseText)
-      $('div.current_rating').html(votable.rating)
+      votableKlass = object.data('klass')
+      votablePath = 'div#rating-' + votableKlass + '-' + votable.id
+      $(votablePath + ' ' + '.current_rating').html(votable.rating)
     .bind 'ajax:error', (e, xhr, data, error) ->
-      $('div.rating_errors').html(xhr.responseText)
+      $('.rating_errors').html(xhr.responseText)
 
   $(document).on 'click', 'a.vote-up, a.vote-down', (e) ->
     update_rating($(this))
-    $('div.rating a.revote').show()
+    $('a.revote').show()
 
   $(document).on 'click', 'a.revote', (e) ->
     update_rating($(this))
