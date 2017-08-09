@@ -4,6 +4,8 @@ RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
 
+  it_behaves_like 'voted'
+
   describe 'GET #index' do
     before { get :index }
 
@@ -150,45 +152,6 @@ RSpec.describe QuestionsController, type: :controller do
       it 'redirects to question' do
         not_deleted_question
         expect(response).to redirect_to question_path(assigns(:question))
-      end
-    end
-  end
-
-  describe 'POST #vote_up' do
-    context 'Authorized user votes up for the question' do
-      user_sign_in
-
-      it 'assigns the requested question to @question' do
-        patch :vote_up, params: { id: question, format: :json }
-        expect(assigns(:question)).to eq question
-      end
-
-      it 'adds positive vote to the question' do
-        expect { patch :vote_up, params: { id: question, format: :json } }.to change(question.votes, :count).by(1)
-      end
-    end
-
-    # context 'Authorized user tries to vote for his own question' do
-    #   user_sign_in
-    #   let(:user_question) { create(:question, user: @user) }
-    #
-    #   it 'does not add positive vote to the question' do
-    #     expect { patch :vote_up, params: { id: user_question, format: :json } }.to_not change(user_question.votes, :count)
-    #   end
-    # end
-  end
-
-  describe 'POST #vote_down' do
-    context 'Authorized user votes down for the question' do
-      user_sign_in
-
-      it 'assigns the requested question to @question' do
-        patch :vote_up, params: { id: question, format: :json }
-        expect(assigns(:question)).to eq question
-      end
-
-      it 'adds negative vote to the question' do
-        expect { patch :vote_down, params: { id: question, format: :json } }.to change(question.votes, :count).by(1)
       end
     end
   end

@@ -20,7 +20,7 @@ module Voted
 
       respond_to { |format| format.json { render json: @votable } }
     else
-      respond_to { |format| format.json { render text: t('vote_error', resource: @votable.to_string.singularize), status: :unprocessable_entity } }
+      respond_to { |format| format.json { render json: t('vote_error', resource: @votable.to_string.singularize), status: :unprocessable_entity } }
     end
   end
 
