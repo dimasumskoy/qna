@@ -1,0 +1,21 @@
+div id="rating-#{resource.to_string.singularize}-#{resource.id}"
+  - if resource.votes.any?
+    .current_rating
+      = resource.rating
+      .rating_errors
+  - else
+    .current_rating
+      p 0
+  - unless current_user&.author_of?(resource)
+    p.vote-links
+      => link_to '+1', { controller: resource.to_string, id: resource, action: 'vote_up' },
+              class: 'vote-up', method: :patch, remote: true, data: { type: :json, klass: resource.to_string.singularize }
+      |
+        /
+      =< link_to '-1', { controller: resource.to_string, id: resource, action: 'vote_down' },
+              class: 'vote-down', method: :patch, remote: true, data: { type: :json, klass: resource.to_string.singularize }
+
+    - if user_signed_in? && resource.voted?(current_user)
+      .revote
+        p= link_to 'Revote', { controller: resource.to_string, id: resource, action: 'revote' },
+                class: 'revote', method: :patch, remote: true, data: { type: :json, klass: resource.to_string.singularize }
