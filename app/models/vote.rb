@@ -7,5 +7,5 @@ class Vote < ApplicationRecord
 
   scope :count_positive, -> { where(value: 1).count }
   scope :count_negative, -> { where(value: -1).count }
-  scope :count_rating, -> { count_positive - count_negative }
+  scope :count_rating, -> { sum(:value) }
 end

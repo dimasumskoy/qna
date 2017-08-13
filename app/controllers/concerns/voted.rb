@@ -2,7 +2,6 @@ module Voted
   extend ActiveSupport::Concern
 
   included do
-    before_action :authenticate_user!, except: [:index, :show]
     before_action :set_votable, only: [:vote_up, :vote_down, :revote]
   end
 
