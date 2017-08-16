@@ -1,8 +1,8 @@
-.questions-list
-  h2 Questions
+h2 Questions
 
-  - @questions.each do |question|
-    h3= link_to "#{question.title}", question_path(question)
-    p= question.body
+ul.questions-list
+- @questions.each do |question|
+  li.questions-list-item
+    = link_to "#{question.title}", question_path(question)
 
-  p= link_to 'Ask question', new_question_path
+p= link_to 'Ask question', new_question_path

@@ -11,8 +11,12 @@ $(document).on 'turbolinks:load', ->
 
   App.cable.subscriptions.create('QuestionsChannel', {
     connected: ->
+      console.log 'Connected!'
       @perform 'follow'
 
     received: (data) ->
-      $('.questions-list').append(data)
+      question = $.parseJSON(data)
+      title = question.title
+      url = 'questions/' + question.id
+      $('.questions-list').append(JST['question']({question_title: title, question_url: url}))
   })
