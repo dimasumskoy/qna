@@ -2,9 +2,11 @@ Rails.application.routes.draw do
   devise_for :users
 
   concern :votable do
-    patch :vote_up, on: :member
-    patch :vote_down, on: :member
-    patch :revote, on: :member
+    member do
+      patch :vote_up
+      patch :vote_down
+      patch :revote
+    end
   end
 
   resources :questions, concerns: :votable do
@@ -16,4 +18,6 @@ Rails.application.routes.draw do
   resources :attachments, only: [:destroy]
 
   root to: 'questions#index'
+
+  mount ActionCable.server => '/cable'
 end

@@ -8,3 +8,11 @@ $(document).on 'turbolinks:load', ->
     $(this).hide()
     question_id = $(this).data('questionId')
     $('form#edit-question-' + question_id).show()
+
+  App.cable.subscriptions.create('QuestionsChannel', {
+    connected: ->
+      @perform 'follow'
+
+    received: (data) ->
+      $('.questions-list').append(data)
+  })
