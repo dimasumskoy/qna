@@ -1,8 +1,8 @@
 h2 Questions
 
-ul.questions-list
+.questions-list
 - @questions.each do |question|
-  li.questions-list-item
+  div.question-title.list-group-item
     = link_to "#{question.title}", question_path(question)
 
-p= link_to 'Ask question', new_question_path
+p= link_to 'Ask question', new_question_path, class: 'btn btn-default ask-question'

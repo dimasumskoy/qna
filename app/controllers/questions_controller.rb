@@ -58,9 +58,8 @@ class QuestionsController < ApplicationController
 
   def stream_question
     return if @question.errors.any?
-    ActionCable.server.broadcast(
-        'questions',
-        ApplicationController.render(json: @question)
+    ActionCable.server.broadcast('questions',
+      ApplicationController.render(json: @question)
     )
   end
 end
