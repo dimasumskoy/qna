@@ -5,6 +5,8 @@ class AnswersController < ApplicationController
   before_action :set_answer, only: [:show, :destroy, :update, :best]
   before_action :set_question, only: [:new, :create]
 
+  after_action :stream_answer, only: [:create]
+
   def index
   end
 
@@ -60,5 +62,11 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body, attachments_attributes: [:file])
+  end
+
+  def stream_answer
+    return if @answer.errors.any?
+    AnswersChannel.broadcast_to @question,
+      ApplicationController.render(json: @answer)
   end
 end

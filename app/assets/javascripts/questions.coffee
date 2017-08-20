@@ -10,10 +10,6 @@ $(document).on 'turbolinks:load', ->
     $('form#edit-question-' + question_id).show()
 
   App.cable.subscriptions.create('QuestionsChannel', {
-    connected: ->
-      console.log 'Connected!'
-      @perform 'follow'
-
     received: (data) ->
       question = $.parseJSON(data)
       title = question.title
