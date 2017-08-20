@@ -3,6 +3,7 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_question, only: [:show, :destroy, :update]
+  before_action :save_user
   after_action :stream_question, only: [:create]
 
   def index
@@ -47,6 +48,10 @@ class QuestionsController < ApplicationController
   end
 
   private
+
+  def save_user
+    gon.current_user = current_user if current_user
+  end
 
   def set_question
     @question = Question.find(params[:id])

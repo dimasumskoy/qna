@@ -4,6 +4,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_answer, only: [:show, :destroy, :update, :best]
   before_action :set_question, only: [:new, :create]
+  before_action :save_user
 
   after_action :stream_answer, only: [:create]
 
@@ -51,6 +52,10 @@ class AnswersController < ApplicationController
   end
 
   private
+
+  def save_user
+    gon.current_user = current_user if current_user
+  end
 
   def set_question
     @question = Question.find(params[:question_id])

@@ -14,5 +14,6 @@ $(document).on 'turbolinks:load', ->
   App.cable.subscriptions.create { channel: "AnswersChannel", question_id: questionId },
     received: (data) ->
       answer = $.parseJSON(data)
-      body = answer.body
-      console.log body
+      console.log gon.current_user
+      console.log answer
+      $('.answer_list').append(JST['answer']({answer: answer, user: gon.current_user}))
