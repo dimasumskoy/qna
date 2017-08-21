@@ -3,6 +3,9 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $(document).on 'turbolinks:load', ->
+  $(document).ajaxError (e, xhr, data, error) ->
+    alert(xhr.responseText)
+
   $(document).on 'click', '.edit-answer-link', (e) ->
     e.preventDefault()
     $(this).hide()
