@@ -15,8 +15,7 @@
     - if current_user&.author_of?(answer)
       p
         => link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
-        |
-          |
+        | |
         =<> link_to 'Delete answer', answer, method: :delete, remote: true, class: 'delete-answer-link', data: {confirm: 'Are you sure?'}
 
       p= form_for answer, html: { id: "edit-answer-#{answer.id}" }, remote: true do |f|

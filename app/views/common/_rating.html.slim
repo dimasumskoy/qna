@@ -11,8 +11,7 @@ div id="rating-#{resource.to_string.singularize}-#{resource.id}"
     div.vote-links
       => link_to '+1', { controller: resource.to_string, id: resource, action: 'vote_up' },
               class: 'vote-up', method: :patch, remote: true, data: { type: :json, klass: resource.to_string.singularize }
-      |
-        /
+      | /
       =< link_to '-1', { controller: resource.to_string, id: resource, action: 'vote_down' },
               class: 'vote-down', method: :patch, remote: true, data: { type: :json, klass: resource.to_string.singularize }
 

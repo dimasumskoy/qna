@@ -3,7 +3,8 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_question, only: [:show, :destroy, :update]
-  before_action :save_user
+  before_action :save_user, only: [:show]
+
   after_action :stream_question, only: [:create]
 
   def index
