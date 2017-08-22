@@ -11,7 +11,7 @@ RSpec.describe Vote, type: :model do
   let(:another_user) { create(:user) }
   let!(:question) { create(:question) }
   let!(:positive_vote) { create(:vote, user_id: user.id, votable: question) }
-  let!(:negative_vote) { create(:negative_vote, user_id: another_user, votable: question) }
+  let!(:negative_vote) { create(:negative_vote, user_id: another_user.id, votable: question) }
 
   context 'scopes' do
     it '.count_positive' do
