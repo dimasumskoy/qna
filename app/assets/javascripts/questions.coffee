@@ -14,5 +14,5 @@ $(document).on 'turbolinks:load', ->
       question = $.parseJSON(data)
       title = question.title
       url = 'questions/' + question.id
-      $('.questions-list').append(JST['question']({question_title: title, question_url: url}))
+      $('.questions-list').append(JST['templates/question']({question_title: title, question_url: url}))
   })

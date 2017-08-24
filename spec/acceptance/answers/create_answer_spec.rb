@@ -31,7 +31,7 @@ feature 'Write an answer to the question', %q{
       visit question_path(question)
 
       click_on 'Reply'
-      expect(page).to have_content "Body can't be blank"
+      expect(page).to have_content 'Body can\'t be blank'
     end
   end
 

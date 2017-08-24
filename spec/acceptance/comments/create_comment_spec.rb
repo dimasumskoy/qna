@@ -8,7 +8,7 @@ feature 'Create comment', %q{
   given(:user) { create(:user) }
   given!(:question) { create(:question) }
 
-  context 'creating comment' do
+  context 'comment creating' do
     scenario 'Authorized user writes a comment', js: true do
       sign_in(user)
       visit question_path(question)
@@ -39,6 +39,29 @@ feature 'Create comment', %q{
       click_on 'Comment this'
 
       expect(page).to have_content 'Body can\'t be blank'
+    end
+  end
+
+  context 'comment appearance' do
+    scenario 'Comment appears on other\'s user page', js: true do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        fill_in 'Comment', with: 'Comment body'
+        click_on 'Comment this'
+        expect(page).to have_content 'Comment body'
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_content 'Comment body'
+      end
     end
   end
 end
