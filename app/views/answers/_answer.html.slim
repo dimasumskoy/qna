@@ -19,10 +19,9 @@
         | |
         =<> link_to 'Delete answer', answer, method: :delete, remote: true, class: 'delete-answer-link', data: {confirm: 'Are you sure?'}
 
-    - if answer.comments.any?
-      h4 Comments
-      .comments
-        = render answer.comments
+    h4 Comments
+    .comments
+      = render answer.comments
 
     = render 'comments/comment_field', resource: answer, comment: answer.comments.build
 
