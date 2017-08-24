@@ -1,8 +1,12 @@
+context = ('<%= @comment.commentable_type.downcase %>')
+contextId = ('div#' + context + '-<%= @comment.commentable.id %>')
+contextForm = (contextId + ' ' + 'form#new_comment')
+
 <% if @comment.errors.any? %>
   <% @comment.errors.full_messages.each do |message| %>
-    $('form#new_comment').append('<%= j message %>');
+    $(contextForm).append('<%= j message %>');
   <% end %>
 <% else %>
-  $('.comments').append('<%= j render @comment %>');
-  $('form#new_comment #comment_body').val('');
+  $(contextId + ' ' + '.comments').append('<%= j render @comment %>');
+  $(contextForm + ' ' + '#comment_body').val('');
 <% end %>

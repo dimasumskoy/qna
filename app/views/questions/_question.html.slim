@@ -1,21 +1,30 @@
 .question data-question-id="#{question.id}"
-  = render 'common/rating', resource: question
+  div id="question-#{question.id}"
+    = render 'common/rating', resource: question
 
-  h2= question.title
-  p= question.body
+    h2= question.title
+    p= question.body
 
-  - if question.attachments.any?
-    = render 'common/attachments', resource: question
+    - if question.attachments.any?
+      = render 'common/attachments', resource: question
 
-  - if current_user&.author_of?(question)
-    p= link_to 'Delete this question', question, method: :delete, data: {confirm: 'Are you sure?'}
-    p= link_to 'Edit', '', class: 'edit-question-link', data: { question_id: question.id }
+    - if current_user&.author_of?(question)
+      p= link_to 'Delete this question', question, method: :delete, data: {confirm: 'Are you sure?'}
+      p= link_to 'Edit', '', class: 'edit-question-link', data: { question_id: question.id }
 
-    p= form_for question, html: { id: "edit-question-#{question.id}" }, remote: true do |f|
-      p= f.label :title
-      p= f.text_field :title, class: 'form-control'
+    - if question.comments.any?
+      h4 Comments
+      .comments
+        = render @question.comments
 
-      p= f.label :body
-      p= f.text_area :body, class: 'form-control'
+    h4 Leave comment
+    = render 'comments/comment_field', resource: @question, comment: @comment
 
-      p= f.submit 'Save', class: 'btn btn-default'
+      p= form_for question, html: { id: "edit-question-#{question.id}" }, remote: true do |f|
+        p= f.label :title
+        p= f.text_field :title, class: 'form-control'
+
+        p= f.label :body
+        p= f.text_area :body, class: 'form-control'
+
+        p= f.submit 'Save', class: 'btn btn-default'

@@ -3,7 +3,7 @@ class CommentsController < ApplicationController
   before_action :set_resource, only: [:create]
 
   def create
-    @comment = @resource.comments.build(comment_params)
+    @comment = @resource.comments.new(comment_params)
     @comment.user = current_user
     @comment.save
   end

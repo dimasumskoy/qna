@@ -1,12 +1,5 @@
 = render @question if @question.persisted?
 
-h4 Comments
-.comments
-  = render @question.comments
-
-h4 Leave comment
-= render 'comments/comment_field', resource: @question, comment: @comment
-
 h3 Answers
 .answer_list
   = render @question.answers.ordered
