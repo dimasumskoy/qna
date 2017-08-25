@@ -12,20 +12,13 @@ class CommentsController < ApplicationController
 
   private
 
-  def resource_context
-    params[:comment][:context].classify.constantize
-  end
-
-  def resource_id
-    "#{resource_context.to_s.downcase}_id".to_sym
-  end
-
   def set_resource
-    @resource = resource_context.find(params[resource_id])
+    klass = [Question, Answer].detect { |klass| params["#{klass.name.underscore}_id"] }
+    @resource = klass.find(params["#{klass.name.underscore}_id"])
   end
 
   def comment_params
-    params.require(:comment).permit(:body, context: params[:comment][:context])
+    params.require(:comment).permit(:body)
   end
 
   def stream_comment
