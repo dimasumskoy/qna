@@ -8,3 +8,11 @@ $(document).on 'turbolinks:load', ->
     $(this).hide()
     question_id = $(this).data('questionId')
     $('form#edit-question-' + question_id).show()
+
+  App.cable.subscriptions.create('QuestionsChannel', {
+    received: (data) ->
+      question = $.parseJSON(data)
+      title = question.title
+      url = 'questions/' + question.id
+      $('.questions-list').append(JST['templates/question']({question_title: title, question_url: url}))
+  })

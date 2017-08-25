@@ -8,3 +8,11 @@ $(document).on 'turbolinks:load', ->
     $(this).hide()
     answer_id = $(this).data('answerId')
     $('form#edit-answer-' + answer_id).show()
+
+  questionId = $('.question').data('questionId')
+
+  App.cable.subscriptions.create { channel: 'AnswersChannel', question_id: questionId },
+    received: (data) ->
+      answer = $.parseJSON(data)
+      if gon.current_user == undefined or gon.current_user.id != answer.user_id
+        $('.answer_list').append(JST['templates/answer']({answer: answer, user: gon.current_user}))

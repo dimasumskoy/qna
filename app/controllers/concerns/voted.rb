@@ -16,7 +16,6 @@ module Voted
   def revote
     if @votable.voted?(current_user)
       @votable.revote(current_user)
-
       respond_to { |format| format.json { render json: @votable } }
     else
       respond_to { |format| format.json { render json: t('vote_error', resource: @votable.to_string.singularize), status: :unprocessable_entity } }

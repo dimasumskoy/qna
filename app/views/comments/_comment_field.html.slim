@@ -1,0 +1,5 @@
+.comment_field
+  = form_for [resource, comment], remote: true do |f|
+    p= f.label :body, 'Comment'
+    p= f.text_area :body, class: 'form-control'
+    p= f.submit 'Comment this', class: 'btn btn-default'

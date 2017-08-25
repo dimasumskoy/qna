@@ -3,6 +3,9 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_question, only: [:show, :destroy, :update]
+  before_action :save_user, only: [:show]
+
+  after_action :stream_question, only: [:create]
 
   def index
     @questions = Question.all
@@ -10,6 +13,7 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = @question.answers.new
+    @comment = @question.comments.new
     @answer.attachments.build
   end
 
@@ -47,11 +51,22 @@ class QuestionsController < ApplicationController
 
   private
 
+  def save_user
+    gon.current_user = current_user if current_user
+  end
+
   def set_question
     @question = Question.find(params[:id])
   end
 
   def question_params
     params.require(:question).permit(:title, :body, attachments_attributes: [:file, :id, :_destroy])
+  end
+
+  def stream_question
+    return if @question.errors.any?
+    ActionCable.server.broadcast('questions',
+      ApplicationController.render(json: @question)
+    )
   end
 end

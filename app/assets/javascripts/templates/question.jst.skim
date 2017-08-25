@@ -1,0 +1,2 @@
+div.question-title.list-group-item
+  a href='#{@question_url}' #{@question_title}
