@@ -3,7 +3,7 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_question, only: [:show, :destroy, :update]
-  before_action :save_user, :set_nested_resources, only: [:show]
+  before_action :save_user, :set_answer, only: [:show]
 
   after_action :stream_question, only: [:create]
 
@@ -48,9 +48,8 @@ class QuestionsController < ApplicationController
     @question = Question.find(params[:id])
   end
 
-  def set_nested_resources
+  def set_answer
     @answer = @question.answers.new
-    @comment = @question.comments.new
   end
 
   def question_params
