@@ -3,47 +3,36 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_question, only: [:show, :destroy, :update]
-  before_action :save_user, only: [:show]
+  before_action :save_user, :set_nested_resources, only: [:show]
 
   after_action :stream_question, only: [:create]
 
+  respond_to :js, only: [:update]
+
   def index
-    @questions = Question.all
+    respond_with(@questions = Question.all)
   end
 
   def show
-    @answer = @question.answers.new
-    @comment = @question.comments.new
-    @answer.attachments.build
+    respond_with @question
   end
 
   def new
-    @question = current_user.questions.build
-    @question.attachments.build
+    respond_with(@question = current_user.questions.build)
   end
 
   def create
-    @question = current_user.questions.new(question_params)
-
-    if @question.save
-      redirect_to @question
-    else
-      render :new
-    end
+    respond_with(@question = current_user.questions.create(question_params))
   end
 
   def update
-    if current_user.author_of?(@question)
-      @question.update(question_params)
-    else
-      render :update
-    end
+    @question.update(question_params) if current_user.author_of?(@question)
+    respond_with @question
   end
 
   def destroy
     if current_user.author_of?(@question)
-      @question.destroy
-      redirect_to @question, notice: 'Question successfully deleted.'
+      respond_with@question.destroy
     else
       redirect_to @question
     end
@@ -57,6 +46,11 @@ class QuestionsController < ApplicationController
 
   def set_question
     @question = Question.find(params[:id])
+  end
+
+  def set_nested_resources
+    @answer = @question.answers.new
+    @comment = @question.comments.new
   end
 
   def question_params
