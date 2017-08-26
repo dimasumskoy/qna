@@ -4,10 +4,10 @@ class CommentsController < ApplicationController
 
   after_action :stream_comment, only: [:create]
 
+  respond_to :js
+
   def create
-    @comment = @resource.comments.new(comment_params)
-    @comment.user = current_user
-    @comment.save
+    respond_with(@comment = @resource.comments.create(comment_params.merge(user: current_user)))
   end
 
   private

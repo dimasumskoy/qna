@@ -19,7 +19,7 @@ RSpec.describe CommentsController, type: :controller do
         expect { valid_comment_attributes }.to change(@user.comments, :count).by(1)
       end
 
-      it 'saves the comment for current user' do
+      it 'saves the comment for requested question' do
         expect { valid_comment_attributes }.to change(question.comments, :count).by(1)
       end
 
