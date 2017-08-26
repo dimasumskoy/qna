@@ -7,40 +7,6 @@ RSpec.describe AnswersController, type: :controller do
 
   it_behaves_like 'voted'
 
-  describe 'GET #show' do
-    before { get :show, params: { id: answer } }
-
-    it 'assigns the requested answer to @answer' do
-      expect(assigns(:answer)).to eq answer
-    end
-
-    it 'renders show view' do 
-      expect(response).to render_template :show 
-    end 
-  end
-
-  describe 'GET #new' do
-    user_sign_in
-
-    before { get :new, params: { question_id: question } }
-
-    it 'assigns the new question to @question' do
-      expect(assigns(:question)).to eq question
-    end
-
-    it 'assigns the new answer to @answer' do
-      expect(assigns(:answer)).to be_a_new(Answer)
-    end
-
-    it 'assigns the new answer for current user' do
-      expect(assigns(:answer).user).to eq @user
-    end
-
-    it 'renders new view' do 
-      expect(response).to render_template :new 
-    end
-  end
-
   describe 'POST #create' do
     user_sign_in
     
@@ -84,11 +50,6 @@ RSpec.describe AnswersController, type: :controller do
     context 'authorized user tries to change his answer' do
       user_sign_in
       let!(:user_answer) { create(:answer, question: question, user: @user) }
-
-      it 'assigns the requested question to @question' do
-        patch :update, params: { answer: attributes_for(:answer), id: user_answer, question_id: question, format: :js }
-        expect(assigns(:question)).to eq question
-      end
 
       it 'assigns the requested answer to @answer' do
         patch :update, params: { answer: attributes_for(:answer), id: user_answer, question_id: question, format: :js }
