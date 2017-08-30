@@ -15,7 +15,7 @@ feature 'Vote for answer', %q{
     sign_in(user)
     visit question_path(question)
 
-    within "div.answer-#{answer.id}" do
+    within "#answer-#{answer.id}" do
       click_on '+1'
       within '.current_rating' do
         expect(page).to have_content '1'
@@ -27,7 +27,7 @@ feature 'Vote for answer', %q{
     sign_in(user)
     visit question_path(question)
 
-    within "div.answer-#{answer.id}" do
+    within "#answer-#{answer.id}" do
       click_on '+1'
       click_on '-1'
     end
@@ -39,7 +39,7 @@ feature 'Vote for answer', %q{
     sign_in(user)
     visit question_path(question)
 
-    within "div.answer-#{user_answer.id}" do
+    within "#answer-#{user_answer.id}" do
       expect(page).to_not have_link '+1'
       expect(page).to_not have_link '-1'
     end
@@ -49,7 +49,7 @@ feature 'Vote for answer', %q{
     sign_in(user)
     visit question_path(question)
 
-    within "div.answer-#{answer.id}" do
+    within "#answer-#{answer.id}" do
       click_on '+1'
 
       within '.current_rating' do

@@ -1,53 +1,30 @@
 class AnswersController < ApplicationController
   include Voted
 
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!
   before_action :set_answer, only: [:show, :destroy, :update, :best]
-  before_action :set_question, only: [:new, :create]
+  before_action :set_question, only: [:create]
 
   after_action :stream_answer, only: [:create]
 
-  def index
-  end
-
-  def show
-  end
-
-  def new
-    @answer = current_user.answers.new
-  end
+  respond_to :js
 
   def create
-    @answer = @question.answers.new(answer_params)
-    @answer.user = current_user
-    @answer.save
+    respond_with(@answer = @question.answers.create(answer_params.merge(user: current_user)))
   end
 
   def update
-    @question = @answer.question
-
-    if current_user.author_of?(@answer)
-      @answer.update(answer_params)
-    else
-      render :update
-    end
+    @answer.update(answer_params) if current_user.author_of?(@answer)
+    respond_with @answer
   end
 
   def destroy
     @question = @answer.question
-    if current_user.author_of?(@answer)
-      @answer.destroy
-    else
-      flash[:notice] = 'You cannot delete this answer'
-    end
+    respond_with(@answer.destroy) if current_user.author_of?(@answer)
   end
 
   def best
-    if current_user.author_of?(@answer.question)
-      @answer.best!
-    else
-      render :best
-    end
+    respond_with(@answer.best!) if current_user.author_of?(@answer.question)
   end
 
   private

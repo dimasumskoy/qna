@@ -5,9 +5,9 @@
   p= f.label :body
   p= f.text_area :body, class: 'form-control'
 
-  #attachments
+  .attachments
     p Attachments:
-    p= f.fields_for :attachments do |attachment|
+    p= f.fields_for :attachments, @question.attachments.build do |attachment|
       = render 'common/attachment_fields', f: attachment
       p= link_to_add_association 'Add more files', f, :attachments, partial: 'common/attachment_fields'
 

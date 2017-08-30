@@ -11,7 +11,6 @@ feature 'List all questions', %q{
   scenario 'Any user can see the list of questions' do 
     visit questions_path
 
-    save_and_open_page
     questions.each do |question|
       expect(page).to have_link question.title
     end
