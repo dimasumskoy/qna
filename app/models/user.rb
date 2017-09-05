@@ -8,6 +8,12 @@ class User < ApplicationRecord
   has_many :answers
   has_many :votes, as: :votable
   has_many :comments
+  has_many :authorizations
+
+  def self.find_oauth(auth)
+    authorization = Authorization.where(provider: auth.provider, uid: auth.uid).first
+    return authorization.user if authorization
+  end
 
   def author_of?(resource)
     id == resource.user_id

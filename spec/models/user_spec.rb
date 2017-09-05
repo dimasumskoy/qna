@@ -12,7 +12,7 @@ RSpec.describe User, type: :model do
   let(:user_question) { create(:question, user: user) }
   let(:not_user_question) { create(:question) }
 
-  context '#author_of?' do
+  describe '#author_of?' do
     it 'returns true' do
       expect(user).to be_author_of(user_question)
     end
@@ -20,5 +20,20 @@ RSpec.describe User, type: :model do
     it 'returns false' do
       expect(user).to_not be_author_of(not_user_question)
     end
+  end
+
+  describe '.find_oauth' do
+    let!(:user) { create(:user) }
+    let(:auth) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '123456') }
+
+    context 'user has authorization' do
+      it 'returns the user' do
+        user.authorizations.create(provider: 'facebook', uid: '123456')
+        expect(User.find_oauth(auth)).to eq user
+      end
+    end
+
+    context 'user has no authorization'
+    context 'user does not exist'
   end
 end
