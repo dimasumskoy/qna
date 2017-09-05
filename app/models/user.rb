@@ -13,6 +13,15 @@ class User < ApplicationRecord
   def self.find_oauth(auth)
     authorization = Authorization.where(provider: auth.provider, uid: auth.uid).first
     return authorization.user if authorization
+
+    email = auth.info[:email]
+    user = User.where(email: email).first
+
+    if user
+      user.authorizations.create(provider: auth.provider, uid: auth.uid)
+    end
+
+    user
   end
 
   def author_of?(resource)
