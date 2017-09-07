@@ -11,13 +11,17 @@ class User < ApplicationRecord
   has_many :authorizations
 
   def self.find_oauth(auth)
-    authorization = Authorization.where(provider: auth.provider, uid: auth.uid).first
+    authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
     return authorization.user if authorization
 
     email = auth.info[:email]
     user = User.where(email: email).first
 
     if user
+      user.authorizations.create(provider: auth.provider, uid: auth.uid)
+    else
+      password = Devise.friendly_token[0, 10]
+      user = User.create(email: email, password: password, password_confirmation: password)
       user.authorizations.create(provider: auth.provider, uid: auth.uid)
     end
 
