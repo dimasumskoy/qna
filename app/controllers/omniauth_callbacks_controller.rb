@@ -9,6 +9,12 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def twitter
-    render json: request.env['omniauth.auth']
+    redirect_to email_path unless auth_params.info[:email]
+  end
+
+  private
+
+  def auth_params
+    request.env['omniauth.auth']
   end
 end
