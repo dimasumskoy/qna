@@ -31,6 +31,7 @@ RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.include FactoryGirl::Syntax::Methods
   config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include OmniauthMacros, type: :controller
   config.extend ControllerMacros, type: :controller
 
   config.include Capybara::DSL
@@ -66,3 +67,5 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
+
+OmniAuth.config.test_mode = true
