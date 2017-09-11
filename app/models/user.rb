@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_many :answers
   has_many :votes, as: :votable
   has_many :comments
-  has_many :authorizations
+  has_many :authorizations, dependent: :destroy
 
   def self.find_oauth(session)
     authorization = Authorization.where(provider: session[:provider], uid: session[:uid].to_s).first
@@ -25,7 +25,6 @@ class User < ApplicationRecord
       password = Devise.friendly_token[0, 10]
       user = User.create!(email: email, password: password, password_confirmation: password)
       user.authorizations.create(provider: session[:provider], uid: session[:uid])
-      user.send_confirmation_instructions
     end
 
     user
