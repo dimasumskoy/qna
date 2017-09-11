@@ -1,9 +1,8 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
 
-  scope :users do
-    get :email, controller: :users
-    post :set_email, controller: :users, as: :set_user_email
+  devise_scope :user do
+    post :set_email, controller: :omniauth_callbacks, as: :set_user_email
   end
 
   concern :votable do
