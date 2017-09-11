@@ -30,6 +30,10 @@ class User < ApplicationRecord
     user
   end
 
+  def self.find_by_auth(uid, provider)
+    joins(:authorizations).where(authorizations: { uid: uid, provider: provider }).first
+  end
+
   def author_of?(resource)
     id == resource.user_id
   end
