@@ -29,7 +29,11 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     session[:provider] = auth.provider
     session[:email] = auth.info[:email]
 
-    check_user(session)
+    if session[:email].blank?
+      check_user(session)
+    else
+      authenticate(session)
+    end
   end
 
   def authenticate(session)
@@ -38,19 +42,19 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     if @user && @user.persisted? && @user.confirmed?
       sign_in_and_redirect @user, event: :authentication
       set_flash_message(:notice, :success, kind: session[:provider]) if is_navigational_format?
+    else
+      redirect_to root_path
+      set_flash_message(:notice, :failure,
+        kind: session[:provider], reason: 'You need to confirm email') if is_navigational_format?
     end
   end
 
   def check_user(session)
-    if session[:email].blank?
-      user = User.find_by_auth(session[:uid], session[:provider])
-      if user
-        authenticate(session)
-      else
-        render template: 'users/email'
-      end
-    else
+    user = User.find_by_auth(session[:uid], session[:provider])
+    if user
       authenticate(session)
+    else
+      render template: 'users/email'
     end
   end
 end

@@ -12,26 +12,32 @@ class User < ApplicationRecord
   has_many :authorizations, dependent: :destroy
 
   def self.find_oauth(session)
-    authorization = Authorization.where(provider: session[:provider], uid: session[:uid].to_s).first
-    return authorization.user if authorization
+    transaction do
+      authorization = Authorization.where(provider: session[:provider], uid: session[:uid].to_s).first
+      return authorization.user if authorization
 
-    email = session[:email]
-    user = User.where(email: email).first
+      email = session[:email]
+      user = User.where(email: email).first
 
-    if user
-      user.authorizations.create(provider: session[:provider], uid: session[:uid])
-      user.confirmed? ? user.skip_confirmation! : user.send_confirmation_instructions
-    else
-      password = Devise.friendly_token[0, 10]
-      user = User.create!(email: email, password: password, password_confirmation: password)
-      user.authorizations.create(provider: session[:provider], uid: session[:uid])
+      if user
+        user.set_authorization(session)
+        user.confirmed? ? user.skip_confirmation! : user.send_confirmation_instructions
+      else
+        password = Devise.friendly_token[0, 10]
+        user = User.create!(email: email, password: password, password_confirmation: password)
+        user.set_authorization(session)
+      end
+
+      user
     end
-
-    user
   end
 
   def self.find_by_auth(uid, provider)
     joins(:authorizations).where(authorizations: { uid: uid, provider: provider }).first
+  end
+
+  def set_authorization(session)
+    self.authorizations.create(provider: session[:provider], uid: session[:uid])
   end
 
   def author_of?(resource)
