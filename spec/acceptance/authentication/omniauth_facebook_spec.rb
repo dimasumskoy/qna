@@ -1,6 +1,6 @@
 require 'acceptance/acceptance_helper'
 
-feature 'Sign in via Twitter & Facebook', %q{
+feature 'Sign in via Facebook', %q{
   In order to sign in without typing email & password
   As a user
   I want to be able to sign in with Facebook account
