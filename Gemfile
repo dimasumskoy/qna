@@ -64,6 +64,7 @@ group :development, :test do
   gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
   gem 'launchy'
   gem 'database_cleaner'
+  gem 'capybara-email'
 end
 
 group :development do
