@@ -28,11 +28,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     session[:provider] = auth.provider
     session[:email] = auth.info[:email]
 
-    if session[:email].blank?
-      check_user(session)
-    else
-      authenticate(session)
-    end
+    session[:email].blank? ? check_user(session) : authenticate(session)
   end
 
   def authenticate(session)
@@ -50,10 +46,6 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def check_user(session)
     user = User.find_by_auth(session[:uid], session[:provider])
-    if user
-      authenticate(session)
-    else
-      render template: 'users/email'
-    end
+    user ? authenticate(session) : render('users/email')
   end
 end
