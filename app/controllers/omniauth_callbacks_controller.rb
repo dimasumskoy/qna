@@ -1,12 +1,11 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   before_action :set_oauth, only: [:facebook, :twitter]
+  before_action -> { authenticate_user(@auth) }, only: [:facebook, :twitter]
 
   def facebook
-    authenticate_user(@auth)
   end
 
   def twitter
-    authenticate_user(@auth)
   end
 
   def set_email
