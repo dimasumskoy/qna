@@ -1,18 +1,30 @@
 class Ability
   include CanCan::Ability
 
+  attr_reader :user
+
   def initialize(user)
+    @user = user
+
     if user
-      if user.admin?
-        can :manage, :all
-      else
-        can :read, :all
-        can :create,  [Question, Answer, Comment]
-        can :update,  [Question, Answer], user: user
-        can :destroy, [Question, Answer], user: user
-      end
+      user.admin? ? admin_abilities : user_abilities
     else
-      can :read, :all
+      guest_abilities
     end
+  end
+
+  def admin_abilities
+    can :manage, :all
+  end
+
+  def guest_abilities
+    can :read, :all
+  end
+
+  def user_abilities
+    can :read, :all
+    can :create,  [Question, Answer, Comment]
+    can :update,  [Question, Answer], user: @user
+    can :destroy, [Question, Answer], user: @user
   end
 end
