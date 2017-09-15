@@ -33,11 +33,17 @@ RSpec.describe Ability, type: :model do
     it { should be_able_to :create, Question }
     it { should be_able_to :create, Answer }
     it { should be_able_to :create, Comment }
-
+    
     it { should be_able_to :update, user_question }
     it { should_not be_able_to :update, question }
 
     it { should be_able_to :update, user_answer }
     it { should_not be_able_to :update, answer }
+
+    it { should be_able_to :destroy, user_question }
+    it { should_not be_able_to :destroy, question }
+
+    it { should be_able_to :destroy, user_answer }
+    it { should_not be_able_to :destroy, answer }
   end
 end

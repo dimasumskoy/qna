@@ -7,9 +7,9 @@ class Ability
         can :manage, :all
       else
         can :read, :all
-        can :create, [Question, Answer, Comment]
-        can :update, [Question, Answer], user: user
-        can :destroy, Question,user: user
+        can :create,  [Question, Answer, Comment]
+        can :update,  [Question, Answer], user: user
+        can :destroy, [Question, Answer], user: user
       end
     else
       can :read, :all
