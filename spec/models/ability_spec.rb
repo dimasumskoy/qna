@@ -21,14 +21,20 @@ RSpec.describe Ability, type: :model do
 
   describe 'user' do
     let(:user) { create(:user) }
-    let(:question) { create(:question) }
+
+    let(:question)      { create(:question) }
     let(:user_question) { create(:question, user: user) }
 
-    let(:answer) { create(:answer) }
+    let(:answer)      { create(:answer, question: user_question) }
     let(:user_answer) { create(:answer, user: user) }
 
-    it { should be_able_to :read, :all }
-    it { should_not be_able_to :manage, :all }
+    let!(:question_vote) { create(:vote, user_id: user.id, votable: question) }
+    let!(:answer_vote)   { create(:vote, user_id: user.id, votable: answer) }
+
+    context 'general abilities' do
+      it { should be_able_to :read, :all }
+      it { should_not be_able_to :manage, :all }
+    end
 
     context 'create' do
       it { should be_able_to :create, Question }
@@ -50,6 +56,33 @@ RSpec.describe Ability, type: :model do
 
       it { should be_able_to :destroy, user_answer }
       it { should_not be_able_to :destroy, answer }
+    end
+
+    context '#best' do
+      it { should be_able_to :best, answer }
+      it { should_not be_able_to :best, user_answer }
+    end
+
+    context 'vote for question' do
+      it { should be_able_to :vote_up, question }
+      it { should_not be_able_to :vote_up, user_question }
+
+      it { should be_able_to :vote_down, question }
+      it { should_not be_able_to :vote_down, user_question }
+
+      it { should be_able_to :revote, question.reload }
+      it { should_not be_able_to :revote, user_question }
+    end
+
+    context 'vote for answer' do
+      it { should be_able_to :vote_up, answer }
+      it { should_not be_able_to :vote_up, user_answer }
+
+      it { should be_able_to :vote_down, answer }
+      it { should_not be_able_to :vote_down, user_answer }
+
+      it { should be_able_to :revote, answer.reload }
+      it { should_not be_able_to :revote, user_answer }
     end
   end
 end
