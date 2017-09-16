@@ -36,7 +36,7 @@ class Ability
   end
 
   def user_update_abilities
-    can [:update, :destroy], [Question, Answer], user: @user
+    can [:update, :destroy], [Question, Answer], user_id: @user.id
   end
 
   def user_best_abilities
@@ -44,7 +44,7 @@ class Ability
   end
 
   def user_vote_abilities
-    can [:vote_up, :vote_down], [Question, Answer] { |votable| votable.user_id != @user.id }
+    can [:vote_up, :vote_down], [Question, Answer] { |votable| !@user.author_of?(votable) }
     can :revote, [Question, Answer] { |votable| votable.voted?(@user) }
   end
 end
