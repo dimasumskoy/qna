@@ -113,7 +113,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'renders update template' do
         patch :update, params: { question: attributes_for(:question), id: question }, format: :js
-        expect(response).to render_template :update
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -147,7 +147,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'redirects to question' do
         not_deleted_question
-        expect(response).to redirect_to question_path(assigns(:question))
+        expect(response).to redirect_to root_path
       end
     end
   end

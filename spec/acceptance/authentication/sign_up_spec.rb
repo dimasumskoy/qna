@@ -14,7 +14,7 @@ feature 'Sign up', %q{
     fill_in 'Password confirmation', with: '123456'
     click_button 'Sign up'
 
-    expect(page).to have_content 'Welcome! You have signed up successfully.'
+    expect(page).to have_content 'A message with a confirmation link has been sent to your email address.'
   end
 
   scenario 'Registered user can not sign up' do

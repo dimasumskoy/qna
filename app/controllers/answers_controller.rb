@@ -7,9 +7,9 @@ class AnswersController < ApplicationController
 
   after_action :stream_answer, only: [:create]
 
-  respond_to :js
-
   authorize_resource
+
+  respond_to :js
 
   def create
     respond_with(@answer = @question.answers.create(answer_params.merge(user: current_user)))
