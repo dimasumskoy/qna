@@ -37,4 +37,19 @@ RSpec.describe Api::V1::ProfilesController, type: :controller do
       end
     end
   end
+
+  describe 'GET #index' do
+    let!(:users) { create_list(:user, 3) }
+    let(:access_token) { create(:access_token) }
+
+    before { get :index, params: { access_token: access_token.token }, format: :json }
+
+    it 'returns status 200' do
+      expect(response).to be_success
+    end
+
+    it 'returns correct amount of users' do
+      expect(response.body).to have_json_size(users.size)
+    end
+  end
 end

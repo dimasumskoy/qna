@@ -9,4 +9,9 @@ class Api::V1::BaseController < ApplicationController
   def current_resource_owner
     @current_resource_owner ||= User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
   end
+
+  def users
+    return if current_resource_owner.nil?
+    @users = User.where.not(id: current_resource_owner.id)
+  end
 end
