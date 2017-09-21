@@ -23,6 +23,18 @@ RSpec.describe Api::V1::ProfilesController, type: :controller do
       it 'returns status 200' do
         expect(response).to be_success
       end
+
+      %w(id created_at updated_at email admin).each do |attr|
+        it "contains #{attr}" do
+          expect(response.body).to be_json_eql(user.send(attr).to_json).at_path(attr)
+        end
+      end
+
+      %w(password encrypted_password).each do |attr|
+        it "does not contains #{attr}" do
+          expect(response.body).to_not have_json_path(attr)
+        end
+      end
     end
   end
 end

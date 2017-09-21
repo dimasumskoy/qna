@@ -67,6 +67,7 @@ group :development, :test do
   gem 'launchy'
   gem 'database_cleaner'
   gem 'capybara-email'
+  gem 'json_spec'
 end
 
 group :development do
