@@ -13,5 +13,16 @@ RSpec.describe Api::V1::ProfilesController, type: :controller do
         expect(response.status).to eq 401
       end
     end
+
+    context 'authorized' do
+      let(:user) { create(:user) }
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+
+      before { get :me, params: { access_token: access_token.token }, format: :json }
+
+      it 'returns status 200' do
+        expect(response).to be_success
+      end
+    end
   end
 end
