@@ -38,18 +38,14 @@ RSpec.describe Api::V1::QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
-    context 'authorized' do
-      let!(:question) { create(:question) }
-      let(:access_token) { create(:access_token) }
-      let!(:comments) { create_list(:comment, 2, commentable: question) }
-      let(:comment) { comments.first }
+    let!(:question) { create(:question) }
+    let(:access_token) { create(:access_token) }
+    let!(:comments) { create_list(:comment, 2, commentable: question) }
+    let(:comment) { comments.first }
 
-      before { get :show, params: { id: question, access_token: access_token.token }, format: :json }
+    before { get :show, params: { id: question, access_token: access_token.token }, format: :json }
 
-      it 'returns status 200' do
-        expect(response).to be_success
-      end
-
+    context 'question comments' do
       %w(id title body created_at updated_at).each do |attr|
         it "contains #{attr}" do
           expect(response.body).to be_json_eql(question.send(attr).to_json).at_path("question/#{attr}")
@@ -66,6 +62,18 @@ RSpec.describe Api::V1::QuestionsController, type: :controller do
 
       it 'returns comment body' do
         expect(response.body).to be_json_eql(comment.body.to_json).at_path('question/comments/1/body')
+      end
+    end
+
+    context 'question attachments' do
+      let!(:attachment) { create(:attachment, attachable: question) }
+
+      it 'contains attachments path' do
+        expect(response.body).to have_json_path('question/attachments')
+      end
+
+      it 'contains attachment file' do
+        expect(response.body).to be_json_eql(attachment.file.to_json).at_path('question/attachments/1/file')
       end
     end
   end
