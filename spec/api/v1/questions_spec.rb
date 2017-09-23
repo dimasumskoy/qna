@@ -30,9 +30,42 @@ RSpec.describe Api::V1::QuestionsController, type: :controller do
       end
 
       %w(id created_at updated_at title body).each do |attr|
-        it "returns #{attr} for each question in list" do
+        it "contains #{attr} for each question in list" do
           expect(response.body).to be_json_eql(question.send(attr).to_json).at_path("questions/0/#{attr}")
         end
+      end
+    end
+  end
+
+  describe 'GET #show' do
+    context 'authorized' do
+      let!(:question) { create(:question) }
+      let(:access_token) { create(:access_token) }
+      let!(:comments) { create_list(:comment, 2, commentable: question) }
+      let(:comment) { comments.first }
+
+      before { get :show, params: { id: question, access_token: access_token.token }, format: :json }
+
+      it 'returns status 200' do
+        expect(response).to be_success
+      end
+
+      %w(id title body created_at updated_at).each do |attr|
+        it "contains #{attr}" do
+          expect(response.body).to be_json_eql(question.send(attr).to_json).at_path("question/#{attr}")
+        end
+      end
+
+      it 'contains comments path' do
+        expect(response.body).to have_json_path('question/comments')
+      end
+
+      it 'returns correct amount of comments' do
+        expect(response.body).to have_json_size(comments.size).at_path('question/comments')
+      end
+
+      it 'returns comment body' do
+        expect(response.body).to be_json_eql(comment.body.to_json).at_path('question/comments/1/body')
       end
     end
   end
