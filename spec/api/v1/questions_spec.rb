@@ -26,12 +26,12 @@ RSpec.describe Api::V1::QuestionsController, type: :controller do
       end
 
       it 'returns correct amount of questions' do
-        expect(response.body).to have_json_size(questions.size)
+        expect(response.body).to have_json_size(questions.size).at_path('questions')
       end
 
       %w(id created_at updated_at title body).each do |attr|
         it "returns #{attr} for each question in list" do
-          expect(response.body).to be_json_eql(question.send(attr).to_json).at_path("0/#{attr}")
+          expect(response.body).to be_json_eql(question.send(attr).to_json).at_path("questions/0/#{attr}")
         end
       end
     end
