@@ -42,6 +42,7 @@ RSpec.describe Api::V1::QuestionsController, type: :controller do
     let(:access_token) { create(:access_token) }
     let!(:comments) { create_list(:comment, 2, commentable: question) }
     let(:comment) { comments.first }
+    let!(:attachment) { create(:attachment, attachable: question) }
 
     before { get :show, params: { id: question, access_token: access_token.token }, format: :json }
 
@@ -66,14 +67,16 @@ RSpec.describe Api::V1::QuestionsController, type: :controller do
     end
 
     context 'question attachments' do
-      let!(:attachment) { create(:attachment, attachable: question) }
-
       it 'contains attachments path' do
         expect(response.body).to have_json_path('question/attachments')
       end
 
+      it 'returns correct amount of attachments' do
+        expect(response.body).to have_json_size(1).at_path('question/attachments')
+      end
+
       it 'contains attachment file' do
-        expect(response.body).to be_json_eql(attachment.file.to_json).at_path('question/attachments/1/file')
+        expect(response.body).to be_json_eql(attachment.file.to_json).at_path('question/attachments/0/file')
       end
     end
   end
