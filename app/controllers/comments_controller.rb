@@ -27,7 +27,7 @@ class CommentsController < ApplicationController
     return if @comment.errors.any?
     question_id = @resource.try(:question_id) || @resource.id
     ActionCable.server.broadcast("question-#{question_id}-comments",
-      ApplicationController.render(json: @comment)
+      CommentSerializer.new(@comment).to_json
     )
   end
 end
