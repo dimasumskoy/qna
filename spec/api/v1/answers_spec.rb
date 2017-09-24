@@ -4,7 +4,7 @@ RSpec.describe Api::V1::AnswersController, type: :controller do
   let!(:question) { create(:question) }
   let!(:answers) { create_list(:answer, 2, question: question) }
   let(:answer) { answers.first }
-  let(:access_token) { create(:access_token) }
+  let(:access_token) { create(:access_token).token }
 
   context 'unauthorized' do
     it 'returns 401 status if there is no access token' do
@@ -19,7 +19,7 @@ RSpec.describe Api::V1::AnswersController, type: :controller do
   end
 
   describe 'GET #index' do
-    before { get :index, params: { question_id: question, access_token: access_token.token }, format: :json }
+    before { get :index, params: { question_id: question, access_token: access_token }, format: :json }
 
     it 'returns status 200' do
       expect(response).to be_success
@@ -40,7 +40,7 @@ RSpec.describe Api::V1::AnswersController, type: :controller do
     let!(:attachment) { create(:attachment, attachable: answer) }
     let!(:comment) { create(:comment, commentable: answer) }
 
-    before { get :show, params: {id: answers.first.id, question_id: question, access_token: access_token.token }, format: :json }
+    before { get :show, params: {id: answers.first.id, question_id: question, access_token: access_token }, format: :json }
 
     it 'contains answer' do
       expect(response.body).to have_json_path('answer')
@@ -64,6 +64,47 @@ RSpec.describe Api::V1::AnswersController, type: :controller do
 
     it 'contains comment body' do
       expect(response.body).to be_json_eql(comment.body.to_json).at_path('answer/comments/0/body')
+    end
+  end
+
+  describe 'POST #create' do
+    let(:question) { create(:question) }
+
+    context 'with valid attributes' do
+      let(:valid_answer_params) do
+        post :create, params: { answer: { body: 'test_body' }, question_id: question,
+                                access_token: access_token, format: :json }
+      end
+
+      it 'returns status 201' do
+        valid_answer_params
+        expect(response.status).to eql 201
+      end
+
+      it 'saves new answer in db' do
+        expect { valid_answer_params }.to change(question.answers, :count).by(1)
+      end
+
+      it 'contains answer attributes' do
+        valid_answer_params
+        expect(Answer.last).to have_attributes(body: 'test_body')
+      end
+    end
+
+    context 'with invalid attributes' do
+      let(:invalid_answer_params) do
+        post :create, params: { answer: attributes_for(:invalid_answer), question_id: question,
+                                access_token: access_token, format: :json }
+      end
+
+      it 'returns status 422 Unprocessable Entity' do
+        invalid_answer_params
+        expect(response.status).to eql 422
+      end
+
+      it 'does not saves new answer in db' do
+        expect { invalid_answer_params }.to_not change(Answer, :count)
+      end
     end
   end
 end
