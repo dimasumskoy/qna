@@ -8,12 +8,12 @@ class Api::V1::QuestionsController < Api::V1::BaseController
 
   def show
     @question = Question.find(params[:id])
-    respond_with @question, each_serializer: QuestionSerializer
+    respond_with @question
   end
 
   def create
     @question = Question.create(question_params.merge(user: current_resource_owner))
-    respond_with @question, each_serializer: QuestionSerializer
+    respond_with @question
   end
 
   private
