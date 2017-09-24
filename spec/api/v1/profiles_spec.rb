@@ -1,23 +1,17 @@
 require 'rails_helper'
+require_relative 'concerns/unauthorized_spec.rb'
 
 RSpec.describe Api::V1::ProfilesController, type: :controller do
   describe 'GET /me' do
-    context 'unauthorized' do
-      it 'returns 401 status if there is no access token' do
-        get :me, format: :json
-        expect(response.status).to eq 401
-      end
+    let(:user) { create(:user) }
+    let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
-      it 'returns 401 status if access token is invalid' do
-        get :me, format: :json, params: { access_token: '123456' }
-        expect(response.status).to eq 401
-      end
+    it_behaves_like 'unauthorized' do
+      let(:request_without_token) { get :me, format: :json }
+      let(:request_with_invalid_token) { get :me, params: { access_token: '12345' }, format: :json }
     end
 
     context 'authorized' do
-      let(:user) { create(:user) }
-      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
-
       before { get :me, params: { access_token: access_token.token }, format: :json }
 
       it 'returns status 200' do
@@ -43,38 +37,41 @@ RSpec.describe Api::V1::ProfilesController, type: :controller do
     let(:user) { create(:user) }
     let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
-    before { get :index, params: { access_token: access_token.token }, format: :json }
-
-    it 'returns status 200' do
-      expect(response).to be_success
+    it_behaves_like 'unauthorized' do
+      let(:request_without_token) { get :index, format: :json }
+      let(:request_with_invalid_token) { get :index, params: { access_token: '12345' }, format: :json }
     end
 
-    it 'returns correct amount of users' do
-      expect(response.body).to have_json_size(users.size)
-    end
+    context 'authorized' do
+      before { get :index, params: { access_token: access_token.token }, format: :json }
 
-    it 'does not contains current resource owner' do
-      expect(response.body).to_not include_json(user.to_json)
-    end
-
-    it 'contains all users' do
-      users.each do |user|
-        expect(response.body).to include_json(user.to_json)
+      it 'returns status 200' do
+        expect(response).to be_success
       end
-    end
 
-    %w(id created_at updated_at email admin).each do |attr|
-      it "contains #{attr} for each user" do
-        users.each_index do |i|
-          expect(response.body).to have_json_path("#{i}/#{attr}")
+      it 'returns correct amount of users' do
+        expect(response.body).to have_json_size(users.size)
+      end
+
+      it 'does not contains current resource owner' do
+        expect(response.body).to_not include_json(user.to_json)
+      end
+
+      it 'contains all users' do
+        users.each do |user|
+          expect(response.body).to include_json(user.to_json)
         end
       end
-    end
 
-    %w(password encrypted_password).each do |attr|
-      it "does not contains #{attr} for each user" do
-        users.each_index do |i|
-          expect(response.body).to_not have_json_path("#{i}/#{attr}")
+      %w(id created_at updated_at email admin).each do |attr|
+        it "contains #{attr} for each user" do
+          expect(response.body).to have_json_path("0/#{attr}")
+        end
+      end
+
+      %w(password encrypted_password).each do |attr|
+        it "does not contains #{attr} for each user" do
+          expect(response.body).to_not have_json_path("0/#{attr}")
         end
       end
     end
