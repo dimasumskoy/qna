@@ -43,4 +43,10 @@ class User < ApplicationRecord
   def author_of?(resource)
     id == resource.user_id
   end
+
+  def reputation_up
+  end
+
+  def reputation_down
+  end
 end
