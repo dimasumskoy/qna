@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 shared_examples_for 'votable' do
   let(:model) { described_class }
   let(:votable) { create(model.to_s.underscore.to_sym) }
