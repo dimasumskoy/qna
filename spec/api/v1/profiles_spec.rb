@@ -3,13 +3,10 @@ require_relative 'concerns/unauthorized_spec.rb'
 
 RSpec.describe Api::V1::ProfilesController, type: :controller do
   describe 'GET /me' do
+    it_behaves_like 'API Authenticable'
+
     let(:user) { create(:user) }
     let(:access_token) { create(:access_token, resource_owner_id: user.id) }
-
-    it_behaves_like 'unauthorized' do
-      let(:request_without_token) { get :me, format: :json }
-      let(:request_with_invalid_token) { get :me, params: { access_token: '12345' }, format: :json }
-    end
 
     context 'authorized' do
       before { get :me, params: { access_token: access_token.token }, format: :json }
@@ -30,17 +27,18 @@ RSpec.describe Api::V1::ProfilesController, type: :controller do
         end
       end
     end
+
+    def do_authenticable(options = {})
+      get :me, params: { format: :json }.merge(options)
+    end
   end
 
   describe 'GET #index' do
+    it_behaves_like 'API Authenticable'
+
     let!(:users) { create_list(:user, 3) }
     let(:user) { create(:user) }
     let(:access_token) { create(:access_token, resource_owner_id: user.id) }
-
-    it_behaves_like 'unauthorized' do
-      let(:request_without_token) { get :index, format: :json }
-      let(:request_with_invalid_token) { get :index, params: { access_token: '12345' }, format: :json }
-    end
 
     context 'authorized' do
       before { get :index, params: { access_token: access_token.token }, format: :json }
@@ -74,6 +72,10 @@ RSpec.describe Api::V1::ProfilesController, type: :controller do
           expect(response.body).to_not have_json_path("0/#{attr}")
         end
       end
+    end
+
+    def do_authenticable(options = {})
+      get :index, params: { format: :json }.merge(options)
     end
   end
 end
