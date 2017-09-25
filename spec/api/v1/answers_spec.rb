@@ -1,5 +1,4 @@
 require 'rails_helper'
-require_relative 'concerns/unauthorized_spec.rb'
 
 RSpec.describe Api::V1::AnswersController, type: :controller do
   let!(:question) { create(:question) }
@@ -8,14 +7,7 @@ RSpec.describe Api::V1::AnswersController, type: :controller do
   let(:access_token) { create(:access_token).token }
 
   describe 'GET #index' do
-    it_behaves_like 'unauthorized' do
-      let(:request_without_token) do
-        get :index, params: { question_id: question }, format: :json
-      end
-      let(:request_with_invalid_token) do
-        get :index, format: :json, params: { question_id: question, access_token: '123456' }
-      end
-    end
+    it_behaves_like 'API Authenticable'
 
     context 'authorized' do
       before { get :index, params: { question_id: question, access_token: access_token }, format: :json }
@@ -34,19 +26,14 @@ RSpec.describe Api::V1::AnswersController, type: :controller do
         end
       end
     end
+
+    def do_authenticable(options = {})
+      get :index, params: { question_id: question, format: :json }.merge(options)
+    end
   end
 
   describe 'GET #show' do
-    it_behaves_like 'unauthorized' do
-      let(:request_without_token) do
-        get :show, params: { id: answers.first.id, question_id: question,
-                             format: :json }
-      end
-      let(:request_with_invalid_token) do
-        get :show, params: { id: answers.first.id, question_id: question,
-                             access_token: '12345', format: :json }
-      end
-    end
+    it_behaves_like 'API Authenticable'
 
     context 'authorized' do
       let!(:attachment) { create(:attachment, attachable: answer) }
@@ -78,19 +65,14 @@ RSpec.describe Api::V1::AnswersController, type: :controller do
         expect(response.body).to be_json_eql(comment.body.to_json).at_path('answer/comments/0/body')
       end
     end
+
+    def do_authenticable(options = {})
+      get :show, params: { id: answers.first.id, question_id: question, format: :json }.merge(options)
+    end
   end
 
   describe 'POST #create' do
-    it_behaves_like 'unauthorized' do
-      let(:request_without_token) do
-        post :create, params: { question_id: question, answer: attributes_for(:answer),
-                                format: :json }
-      end
-      let(:request_with_invalid_token) do
-        post :create, params: { question_id: question, answer: attributes_for(:answer),
-                                access_token: '123456', format: :json }
-      end
-    end
+    it_behaves_like 'API Authenticable'
 
     context 'authorized' do
       let(:question) { create(:question) }
@@ -131,6 +113,11 @@ RSpec.describe Api::V1::AnswersController, type: :controller do
           expect { invalid_answer_params }.to_not change(Answer, :count)
         end
       end
+    end
+
+    def do_authenticable(options = {})
+      post :create, params: { answer: { body: 'test_body' },
+                              question_id: question, format: :json }.merge(options)
     end
   end
 end
