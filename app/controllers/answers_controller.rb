@@ -46,6 +46,6 @@ class AnswersController < ApplicationController
   def stream_answer
     return if @answer.errors.any?
     AnswersChannel.broadcast_to @question,
-      ApplicationController.render(json: @answer)
+      AnswerSerializer.new(@answer).to_json
   end
 end
