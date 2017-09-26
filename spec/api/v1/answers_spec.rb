@@ -7,7 +7,7 @@ RSpec.describe Api::V1::AnswersController, type: :controller do
   let(:access_token) { create(:access_token).token }
 
   describe 'GET #index' do
-    it_behaves_like 'API Authenticable'
+    it_behaves_like 'API Authorizable'
 
     context 'authorized' do
       before { get :index, params: { question_id: question, access_token: access_token }, format: :json }
@@ -27,13 +27,13 @@ RSpec.describe Api::V1::AnswersController, type: :controller do
       end
     end
 
-    def do_authenticable(options = {})
+    def do_authorizable(options = {})
       get :index, params: { question_id: question, format: :json }.merge(options)
     end
   end
 
   describe 'GET #show' do
-    it_behaves_like 'API Authenticable'
+    it_behaves_like 'API Authorizable'
 
     context 'authorized' do
       let!(:attachment) { create(:attachment, attachable: answer) }
@@ -66,13 +66,13 @@ RSpec.describe Api::V1::AnswersController, type: :controller do
       end
     end
 
-    def do_authenticable(options = {})
+    def do_authorizable(options = {})
       get :show, params: { id: answers.first.id, question_id: question, format: :json }.merge(options)
     end
   end
 
   describe 'POST #create' do
-    it_behaves_like 'API Authenticable'
+    it_behaves_like 'API Authorizable'
 
     context 'authorized' do
       let(:question) { create(:question) }
@@ -115,7 +115,7 @@ RSpec.describe Api::V1::AnswersController, type: :controller do
       end
     end
 
-    def do_authenticable(options = {})
+    def do_authorizable(options = {})
       post :create, params: { answer: { body: 'test_body' },
                               question_id: question, format: :json }.merge(options)
     end

@@ -1,9 +1,8 @@
 require 'rails_helper'
-require_relative 'concerns/unauthorized_spec.rb'
 
 RSpec.describe Api::V1::ProfilesController, type: :controller do
   describe 'GET /me' do
-    it_behaves_like 'API Authenticable'
+    it_behaves_like 'API Authorizable'
 
     let(:user) { create(:user) }
     let(:access_token) { create(:access_token, resource_owner_id: user.id) }
@@ -28,13 +27,13 @@ RSpec.describe Api::V1::ProfilesController, type: :controller do
       end
     end
 
-    def do_authenticable(options = {})
+    def do_authorizable(options = {})
       get :me, params: { format: :json }.merge(options)
     end
   end
 
   describe 'GET #index' do
-    it_behaves_like 'API Authenticable'
+    it_behaves_like 'API Authorizable'
 
     let!(:users) { create_list(:user, 3) }
     let(:user) { create(:user) }
@@ -74,7 +73,7 @@ RSpec.describe Api::V1::ProfilesController, type: :controller do
       end
     end
 
-    def do_authenticable(options = {})
+    def do_authorizable(options = {})
       get :index, params: { format: :json }.merge(options)
     end
   end

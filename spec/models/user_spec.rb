@@ -86,14 +86,4 @@ RSpec.describe User, type: :model do
       end
     end
   end
-
-  describe 'reputation' do
-    it 'can receive #reputation_up' do
-      allow(subject).to receive(:reputation_up)
-    end
-
-    it 'can receive #reputation_down' do
-      allow(subject).to receive(:reputation_down)
-    end
-  end
 end
