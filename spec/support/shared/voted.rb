@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 shared_examples_for 'voted' do
   let(:resource) { controller.controller_name.singularize.to_sym }
   let(:voted) { create(resource) }
@@ -49,7 +47,7 @@ shared_examples_for 'voted' do
     end
   end
 
-  describe 'vote' do
+  describe 'Checking cases' do
     context 'Authorized user tries to vote for his own resource' do
       user_sign_in
       let(:user_voted) { create(resource, user: @user) }

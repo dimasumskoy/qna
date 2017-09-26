@@ -1,14 +1,10 @@
 require 'rails_helper'
-require_relative 'concerns/unauthorized_spec.rb'
 
 RSpec.describe Api::V1::QuestionsController, type: :controller do
   let(:access_token) { create(:access_token).token }
 
   describe 'GET #index' do
-    it_behaves_like 'unauthorized' do
-      let(:request_without_token) { get :index, format: :json }
-      let(:request_with_invalid_token) { get :index, format: :json, params: { access_token: '123456' } }
-    end
+    it_behaves_like 'API Authorizable'
 
     context 'authorized' do
       let!(:questions) { create_list(:question, 3) }
@@ -29,21 +25,18 @@ RSpec.describe Api::V1::QuestionsController, type: :controller do
         end
       end
     end
+
+    def do_authorizable(options = {})
+      get :index, params: { format: :json }.merge(options)
+    end
   end
 
   describe 'GET #show' do
+    it_behaves_like 'API Authorizable'
+
     let!(:question) { create(:question) }
     let!(:comments) { create_list(:comment, 2, commentable: question) }
     let!(:attachment) { create(:attachment, attachable: question) }
-
-    it_behaves_like 'unauthorized' do
-      let(:request_without_token) do
-        get :show, params: { id: question, format: :json }
-      end
-      let(:request_with_invalid_token) do
-        get :show, params: { id: question, access_token: '12345', format: :json }
-      end
-    end
 
     context 'authorized' do
       before { get :show, params: { id: question, access_token: access_token }, format: :json }
@@ -84,19 +77,14 @@ RSpec.describe Api::V1::QuestionsController, type: :controller do
         end
       end
     end
+
+    def do_authorizable(options = {})
+      get :show, params: { id: question, format: :json }.merge(options)
+    end
   end
 
   describe 'POST #create' do
-    it_behaves_like 'unauthorized' do
-      let(:request_without_token) do
-        post :create, params: { question: { title: 'test_title', body: 'test_body' },
-                                format: :json }
-      end
-      let(:request_with_invalid_token) do
-        post :create, params: { question: { title: 'test_title', body: 'test_body' },
-                                access_token: '12345', format: :json }
-      end
-    end
+    it_behaves_like 'API Authorizable'
 
     context 'authorized' do
       context 'with valid attributes' do
@@ -133,6 +121,10 @@ RSpec.describe Api::V1::QuestionsController, type: :controller do
           expect { invalid_question_params }.to_not change(Question, :count)
         end
       end
+    end
+
+    def do_authorizable(options = {})
+      post :create, params: { question: { title: 'test_title', body: 'test_body' }, format: :json }.merge(options)
     end
   end
 end
