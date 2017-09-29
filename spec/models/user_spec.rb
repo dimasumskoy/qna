@@ -86,11 +86,4 @@ RSpec.describe User, type: :model do
       end
     end
   end
-
-  describe '#new_answer_notification' do
-    it 'sends notification to user email' do
-      expect(user).to receive(:new_answer_notification).and_call_original
-      user.new_answer_notification(user_question)
-    end
-  end
 end
