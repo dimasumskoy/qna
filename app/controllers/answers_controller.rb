@@ -51,6 +51,6 @@ class AnswersController < ApplicationController
   end
 
   def send_notification
-    @question.user.new_answer_notification(@question)
+    NewAnswerNotificationJob.perform_later(@question.user, @question)
   end
 end

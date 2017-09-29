@@ -43,8 +43,4 @@ class User < ApplicationRecord
   def author_of?(resource)
     id == resource.user_id
   end
-
-  def new_answer_notification(question)
-    NotificationMailer.new_answer(self, question).deliver_now
-  end
 end
