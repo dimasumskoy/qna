@@ -45,6 +45,6 @@ class User < ApplicationRecord
   end
 
   def new_answer_notification(question)
-    NotificationMailer.new_answer(self, question)
+    NotificationMailer.new_answer(self, question).deliver_now
   end
 end

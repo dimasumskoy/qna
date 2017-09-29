@@ -3,6 +3,7 @@ class NotificationMailer < ApplicationMailer
 
   def new_answer(user, question)
     @question = question
+    @user = user
 
     mail to: user.email
   end
