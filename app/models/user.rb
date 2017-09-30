@@ -11,7 +11,6 @@ class User < ApplicationRecord
   has_many :comments
   has_many :authorizations, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
-  has_many :questions, through: :subscriptions
 
   def self.find_oauth(session)
     transaction do
