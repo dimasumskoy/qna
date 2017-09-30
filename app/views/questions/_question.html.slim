@@ -12,6 +12,11 @@
       p= link_to 'Delete this question', question, method: :delete, data: {confirm: 'Are you sure?'}
       p= link_to 'Edit', '', class: 'edit-question-link', data: { question_id: question.id }
 
+    - if current_user.subscribed?(question)
+      p= link_to 'Unsibscribe'
+    - else
+      p= link_to 'Subscribe'
+
     p= form_for question, html: {id: "edit-question-#{question.id}"}, remote: true do |f|
       p= f.label :title
       p= f.text_field :title, class: 'form-control'
