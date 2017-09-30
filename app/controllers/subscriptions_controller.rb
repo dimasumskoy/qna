@@ -1,5 +1,5 @@
 class SubscriptionsController < ApplicationController
-  before_action :set_question, only: :create
+  before_action :set_question
   skip_authorization_check
 
   respond_to :json
@@ -7,6 +7,11 @@ class SubscriptionsController < ApplicationController
   def create
     @subscription = @question.subscribe(current_user)
     respond_to { |format| format.json { render json: @subscription } }
+  end
+
+  def destroy
+    @unsubscribed = @question.unsubscribe(current_user)
+    respond_to { |format| format.json { render json: @unsubscribed } }
   end
 
   private

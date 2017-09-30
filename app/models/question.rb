@@ -14,6 +14,10 @@ class Question < ApplicationRecord
   scope :daily_questions, -> { where(created_at: (Time.now - 1.day)..Time.now) }
 
   def subscribe(user)
-    subscriptions.create!(user: user)
+    subscriptions.create(user: user)
+  end
+
+  def unsubscribe(user)
+    subscriptions.where(user: user).first.destroy
   end
 end

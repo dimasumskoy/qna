@@ -3,6 +3,5 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $(document).on 'turbolinks:load', ->
-  $(document).on 'click', 'a.subscribe', (e) ->
+  $(document).on 'click', 'a.subscribe, a.unsubscribe', (e) ->
     $(this).hide()
-    $('a.unsubscribe').show()
