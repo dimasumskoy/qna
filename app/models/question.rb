@@ -12,4 +12,8 @@ class Question < ApplicationRecord
   validates :title, :body, presence: true
 
   scope :daily_questions, -> { where(created_at: (Time.now - 1.day)..Time.now) }
+
+  def subscribe(user)
+    subscriptions.create!(user: user)
+  end
 end

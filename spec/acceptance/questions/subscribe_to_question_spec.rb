@@ -14,7 +14,7 @@ feature 'Subscribe to question', %q{
 
     within '.question' do
       click_on 'Subscribe'
-      expect(page).to have_content 'Subscribed'
+      expect(page).to have_link 'Unsubscribe'
     end
   end
 

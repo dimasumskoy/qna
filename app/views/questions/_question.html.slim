@@ -12,10 +12,10 @@
       p= link_to 'Delete this question', question, method: :delete, data: {confirm: 'Are you sure?'}
       p= link_to 'Edit', '', class: 'edit-question-link', data: { question_id: question.id }
 
-    - if current_user.subscribed?(question)
-      p= link_to 'Unsibscribe'
+    - if current_user&.subscribed?(question)
+      p= link_to 'Unsubscribe', , class: 'unsubscribe'
     - else
-      p= link_to 'Subscribe'
+      p= link_to 'Subscribe', question_subscriptions_path(question), class: 'subscribe', method: :post, remote: true, data: { type: :json }
 
     p= form_for question, html: {id: "edit-question-#{question.id}"}, remote: true do |f|
       p= f.label :title
