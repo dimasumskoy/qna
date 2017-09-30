@@ -45,4 +45,8 @@ class User < ApplicationRecord
   def author_of?(resource)
     id == resource.user_id
   end
+
+  def subscribed?(question)
+    subscriptions.where(question_id: question.id).exists?
+  end
 end
