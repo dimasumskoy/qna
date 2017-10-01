@@ -5,3 +5,7 @@
 $(document).on 'turbolinks:load', ->
   $(document).on 'click', 'a.subscribe, a.unsubscribe', (e) ->
     $(this).hide()
+    if $(this).hasClass('subscribe')
+      $('a.unsubscribe').show()
+    else if $(this).hasClass('unsubscribe')
+      $('a.subscribe').show()
