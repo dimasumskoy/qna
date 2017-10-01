@@ -1,6 +1,7 @@
 class SubscriptionsController < ApplicationController
   before_action :set_question
-  skip_authorization_check
+
+  authorize_resource
 
   respond_to :json
 

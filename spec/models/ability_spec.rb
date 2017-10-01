@@ -20,13 +20,16 @@ RSpec.describe Ability, type: :model do
   end
 
   describe 'user' do
-    let(:user) { create(:user) }
+    let(:user)          { create(:user) }
 
     let(:question)      { create(:question) }
     let(:user_question) { create(:question, user: user) }
 
-    let(:answer)      { create(:answer, question: user_question) }
-    let(:user_answer) { create(:answer, user: user) }
+    let(:answer)        { create(:answer, question: user_question) }
+    let(:user_answer)   { create(:answer, user: user) }
+
+    let(:subscription)  { create(:subscription) }
+    let(:user_subscription)    { create(:subscription, question: question, user: user) }
 
     let!(:question_vote) { create(:vote, user_id: user.id, votable: question) }
     let!(:answer_vote)   { create(:vote, user_id: user.id, votable: answer) }
@@ -40,6 +43,7 @@ RSpec.describe Ability, type: :model do
       it { should be_able_to :create, Question }
       it { should be_able_to :create, Answer }
       it { should be_able_to :create, Comment }
+      it { should be_able_to :create, Subscription }
     end
 
     context 'update' do
@@ -56,6 +60,9 @@ RSpec.describe Ability, type: :model do
 
       it { should be_able_to :destroy, user_answer }
       it { should_not be_able_to :destroy, answer }
+
+      it { should be_able_to :destroy, user_subscription }
+      it { should_not be_able_to :destroy, subscription }
     end
 
     context '#best' do
