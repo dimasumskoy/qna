@@ -5,7 +5,7 @@ class AnswersController < ApplicationController
   before_action :set_answer, only: [:show, :destroy, :update, :best]
   before_action :set_question, only: [:create]
 
-  after_action :send_notification, :stream_answer, only: [:create]
+  after_action :stream_answer, only: [:create]
 
   authorize_resource
 
@@ -47,9 +47,5 @@ class AnswersController < ApplicationController
     return if @answer.errors.any?
     AnswersChannel.broadcast_to @question,
       AnswerSerializer.new(@answer).to_json
-  end
-
-  def send_notification
-    NewAnswerNotificationJob.perform_later(@question)
   end
 end
