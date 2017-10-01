@@ -5,7 +5,7 @@ class QuestionsController < ApplicationController
   before_action :set_question, only: [:show, :destroy, :update]
   before_action :save_user, :set_answer, only: [:show]
 
-  after_action :stream_question, only: [:create]
+  after_action :stream_question, :subscribe_user, only: [:create]
 
   respond_to :js, only: [:update]
 
@@ -24,9 +24,7 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = current_user.questions.create(question_params)
-    @question.subscribe(current_user) if @question.persisted?
-    respond_with @question
+    respond_with(@question = current_user.questions.create(question_params))
   end
 
   def update
@@ -63,5 +61,9 @@ class QuestionsController < ApplicationController
   def stream_question
     return if @question.errors.any?
     ActionCable.server.broadcast('questions', QuestionSerializer.new(@question).to_json)
+  end
+
+  def subscribe_user
+    @question.subscribe(current_user) if @question.persisted?
   end
 end
