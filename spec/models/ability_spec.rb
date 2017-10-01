@@ -29,7 +29,7 @@ RSpec.describe Ability, type: :model do
     let(:user_answer)   { create(:answer, user: user) }
 
     let(:subscription)  { create(:subscription) }
-    let(:user_subscription)    { create(:subscription, question: question, user: user) }
+    let(:user_subscription) { create(:subscription, question: question, user: user) }
 
     let!(:question_vote) { create(:vote, user_id: user.id, votable: question) }
     let!(:answer_vote)   { create(:vote, user_id: user.id, votable: answer) }
