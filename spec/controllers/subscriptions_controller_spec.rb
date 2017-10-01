@@ -49,7 +49,6 @@ RSpec.describe SubscriptionsController, type: :controller do
     end
 
     context 'Unauthorized user tries to unsubscribe' do
-      user_sign_in
       let!(:subscription) { create(:subscription, question: question, user: user) }
 
       it 'does not delete subscription from db' do

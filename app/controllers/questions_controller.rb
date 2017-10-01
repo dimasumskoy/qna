@@ -25,7 +25,7 @@ class QuestionsController < ApplicationController
 
   def create
     @question = current_user.questions.create(question_params)
-    @question.subscribe(current_user)
+    @question.subscribe(current_user) if @question.persisted?
     respond_with @question
   end
 
