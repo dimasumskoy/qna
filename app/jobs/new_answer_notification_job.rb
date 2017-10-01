@@ -1,7 +1,9 @@
 class NewAnswerNotificationJob < ApplicationJob
   queue_as :default
 
-  def perform(user, question)
-    NotificationMailer.new_answer(user, question).deliver_now
+  def perform(question)
+    question.subscribers.find_each do |subscriber|
+      NotificationMailer.new_answer(subscriber, question).deliver_later(wait: 5.seconds)
+    end
   end
 end

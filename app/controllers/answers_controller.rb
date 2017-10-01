@@ -5,8 +5,7 @@ class AnswersController < ApplicationController
   before_action :set_answer, only: [:show, :destroy, :update, :best]
   before_action :set_question, only: [:create]
 
-  after_action :send_notification, only: [:create]
-  after_action :stream_answer, only: [:create]
+  after_action :send_notification, :stream_answer, only: [:create]
 
   authorize_resource
 
@@ -51,6 +50,6 @@ class AnswersController < ApplicationController
   end
 
   def send_notification
-    NewAnswerNotificationJob.perform_later(@question.user, @question)
+    NewAnswerNotificationJob.perform_later(@question)
   end
 end
