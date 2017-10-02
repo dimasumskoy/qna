@@ -12,8 +12,7 @@ RSpec.describe Question, type: :model do
   it { should validate_presence_of :body }
 
   let(:user) { create(:user) }
-  let(:question) { create(:question) }
-  let!(:subscription) { create(:subscription, question: question, user: user) }
+  let!(:question) { create(:question, user: user) }
 
   describe '.daily_questions' do
     let!(:old_question) { create(:question, created_at: 2.days.ago) }
