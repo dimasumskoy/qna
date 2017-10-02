@@ -1,0 +1,6 @@
+h3 Greetings form QnA
+h4 Here are new questions for the last day
+
+ul.questions-daily-digest
+- @questions.each do |question|
+  li= link_to "#{question.title}", question

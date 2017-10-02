@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  it_behaves_like 'Subscribeable'
+
   it { should have_many(:questions) }
   it { should have_many(:answers) }
   it { should have_many(:votes) }
@@ -84,6 +86,21 @@ RSpec.describe User, type: :model do
       it 'returns the user' do
         expect(User.find_oauth(auth)).to be_a(User)
       end
+    end
+  end
+
+  describe '#subscribed?' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question) }
+    let(:other_question) { create(:question) }
+    let!(:subscription) { create(:subscription, question: question, user: user) }
+
+    it 'returns true' do
+      expect(user).to be_subscribed(question)
+    end
+
+    it 'returns false' do
+      expect(user).to_not be_subscribed(other_question)
     end
   end
 end

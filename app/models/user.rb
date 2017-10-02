@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :votes, as: :votable
   has_many :comments
   has_many :authorizations, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
 
   def self.find_oauth(session)
     transaction do
@@ -42,5 +43,9 @@ class User < ApplicationRecord
 
   def author_of?(resource)
     id == resource.user_id
+  end
+
+  def subscribed?(question)
+    subscriptions.where(question_id: question.id).exists?
   end
 end
