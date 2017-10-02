@@ -3,12 +3,12 @@ class Answer < ApplicationRecord
   include Votable
   include Commentable
 
-  after_create_commit :send_notification
-
   belongs_to :question
   belongs_to :user
 
   validates :body, presence: true
+
+  after_create :send_notification
 
   scope :ordered, -> { order(best: :desc) }
 

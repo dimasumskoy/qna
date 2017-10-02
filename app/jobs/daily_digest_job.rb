@@ -5,7 +5,7 @@ class DailyDigestJob < ApplicationJob
     questions ||= Question.daily_questions
 
     User.find_each do |user|
-      DailyDigestMailer.digest(user, questions).deliver_now
+      DailyDigestMailer.digest(user, questions).deliver_later
     end
   end
 end
