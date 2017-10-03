@@ -1,0 +1,10 @@
+.search
+  .col-lg-4
+    .input-group
+      = form_tag search_path, method: :get, class: 'form-group'
+        = label_tag :q, ''
+        .col-md-7
+          = text_field_tag :q, '', class: 'form-control', placeholder: 'Search'
+        .col-md-5
+          = select_tag(:resource, options_for_select(%w(Everywhere Questions Answers Comments Users)),
+                { class: 'form-control' })
