@@ -22,7 +22,5 @@ config/database.yml
 
 /public/uploads
 
-config/development.sphinx.conf
-config/test.sphinx.conf
-config/thinking_sphinx.yml
-db/sphinx/
+config/*sphinx.conf
+db/sphinx/*
