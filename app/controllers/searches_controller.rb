@@ -1,6 +1,7 @@
 class SearchesController < ApplicationController
   before_action :set_search_params
-  skip_authorization_check
+
+  load_and_authorize_resource class: ThinkingSphinx
 
   def show
     @results = ThinkingSphinx.search @search, classes: [@scope]
