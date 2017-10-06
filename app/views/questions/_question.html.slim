@@ -1,9 +1,11 @@
 .question data-question-id="#{question.id}"
   div id="question-#{question.id}"
-    = render 'common/rating', resource: question
 
-    h2= question.title
-    p= question.body
+    .question-title-rating
+      = render 'common/rating', resource: question
+      h2= question.title
+    .question-body
+      p= question.body
 
     - if question.attachments.any?
       = render 'common/attachments', resource: question
@@ -13,9 +15,9 @@
       p= link_to 'Edit', '', class: 'edit-question-link', data: { question_id: question.id }
 
     - if current_user&.subscribed?(question)
-      p= link_to 'Unsubscribe', question_subscription_path(question), class: 'unsubscribe', method: :delete, remote: true, data: { type: :json }
+      p= link_to 'Unsubscribe', question_subscription_path(question), class: 'btn btn-default btn-sm unsubscribe', method: :delete, remote: true, data: { type: :json }
     - else
-      p= link_to 'Subscribe', question_subscriptions_path(question), class: 'subscribe', method: :post, remote: true, data: { type: :json }
+      p= link_to 'Subscribe', question_subscriptions_path(question), class: 'btn btn-default btn-sm subscribe', method: :post, remote: true, data: { type: :json }
 
     p= form_for question, html: {id: "edit-question-#{question.id}"}, remote: true do |f|
       p= f.label :title

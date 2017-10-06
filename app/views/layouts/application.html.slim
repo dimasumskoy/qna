@@ -18,8 +18,7 @@ html lang="en"
   body
     .navbar.navbar-default.navbar-static-top
       .container
-        button.navbar-toggle type="button" data-toggle="collapse" data-target=".navbar-responsive-collapse"
-        = link_to 'Qna', root_path, class: 'navbar-brand'
+        = link_to 'qna', root_path, class: 'navbar-brand'
         .navbar-collapse.collapse.navbar-responsive-collapse
           ul.nav.navbar-nav
             - if user_signed_in?
@@ -27,12 +26,12 @@ html lang="en"
             - else
               li= link_to 'Sign in', new_user_session_path
               li= link_to 'Sign up', new_user_registration_path
+          = link_to 'Ask question', new_question_path, class: 'btn btn-default ask-question-button'
           = render 'common/search_field'
     .container
-      .row
-        .col-lg-9
-          = bootstrap_flash
-          = yield
+      .row.questions
+        = bootstrap_flash
+        = yield
 
       /footer
       /  p &copy; Company 2017

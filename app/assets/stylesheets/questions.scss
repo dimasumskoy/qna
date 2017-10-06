@@ -5,3 +5,53 @@
 .edit_question { display: none; }
 .ask-question { margin: 0.5em 0 0.5em 0; }
 .question-title a { font-size: 1.5em }
+
+.question-title-rating {
+  position: relative;
+    .current_rating {
+      position: absolute;
+      top: 10%;
+      left: -3%;
+      font-size: 2em;
+      color: #1D7F76;
+    }
+}
+
+.question-title-rating .vote-links .vote-up {
+  position: absolute;
+  left: -3%;
+  top: -40%;
+  font-size: 1.7em;
+}
+
+.question-title-rating .vote-links .vote-down {
+  position: absolute;
+  left: -2.8%;
+  top: 56%;
+  font-size: 2em;
+}
+
+.question h2 {
+  padding: 10px;
+  border-bottom: 2px solid #2E2E2E;
+  font-weight: bold;
+  color: #2E2E2E;
+}
+
+.question .question-body {
+  padding: 1em 0;
+  font-size: 1.2em;
+}
+
+.question .subscribe,
+.question .unsubscribe {
+  color: white;
+  background: #1D7F76;
+  border-color: #1D7F76;
+  margin-bottom: 1em;
+}
+.question .subscribe:hover,
+.question .unsubscribe:hover {
+  background: #2BBBAD;
+  border-color: #2BBBAD;
+}
