@@ -6,28 +6,36 @@
 .ask-question { margin: 0.5em 0 0.5em 0; }
 .question-title a { font-size: 1.5em }
 
-.question-title-rating {
+.question {
   position: relative;
-    .current_rating {
-      position: absolute;
-      top: 10%;
-      left: -3%;
-      font-size: 2em;
-      color: #1D7F76;
-    }
 }
 
-.question-title-rating .vote-links .vote-up {
+.question-rating {
   position: absolute;
   left: -3%;
-  top: -40%;
+  top: -7.5%;
+  width: 30px;
+  height: 100px;
+}
+
+.question-rating .current_rating {
+  position: absolute;
+  top: 40%;
+  font-size: 1.7em;
+  color: #1D7F76;
+}
+
+.question-rating .vote-links .vote-up {
+  position: absolute;
+  left: 0;
+  top: 10%;
   font-size: 1.7em;
 }
 
-.question-title-rating .vote-links .vote-down {
+.question-rating .vote-links .vote-down {
   position: absolute;
-  left: -2.8%;
-  top: 56%;
+  left: 0;
+  bottom: 0;
   font-size: 2em;
 }
 

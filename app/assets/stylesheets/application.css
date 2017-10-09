@@ -27,6 +27,10 @@ a:hover {
     text-decoration: none;
 }
 
+.container .questions {
+    padding: 0 15px;
+}
+
 .search .input-group {
     float: right;
 }

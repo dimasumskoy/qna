@@ -1,8 +1,8 @@
 .question data-question-id="#{question.id}"
   div id="question-#{question.id}"
-
-    .question-title-rating
+    .question-rating
       = render 'common/rating', resource: question
+    .question-title
       h2= question.title
     .question-body
       p= question.body
