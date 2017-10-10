@@ -4,6 +4,3 @@ h2.questions-index Questions
 - @questions.each do |question|
   div.question-title.list-group-item
     = link_to "#{question.title}", question_path(question)
-
-/- if can?(:create, Question)
-/  p= link_to 'Ask question', new_question_path, class: 'btn btn-default ask-question'
