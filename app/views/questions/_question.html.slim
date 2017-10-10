@@ -1,36 +1,37 @@
-.question data-question-id="#{question.id}"
-  div id="question-#{question.id}"
-    .question-rating
-      = render 'common/rating', resource: question
-    .question-title
-      h2= question.title
-    .question-body
-      p= question.body
+- cache question do
+  .question data-question-id="#{question.id}"
+    div id="question-#{question.id}"
+      .question-rating
+        = render 'common/rating', resource: question
+      .question-title
+        h2= question.title
+      .question-body
+        p= question.body
 
-    - if question.attachments.any?
-      = render 'common/attachments', resource: question
+      - if question.attachments.any?
+        = render 'common/attachments', resource: question
 
-    - if current_user&.author_of?(question)
-      p= link_to 'Delete this question', question, method: :delete, data: {confirm: 'Are you sure?'}
-      p= link_to 'Edit', '', class: 'edit-question-link', data: { question_id: question.id }
+      - if current_user&.author_of?(question)
+        p= link_to 'Delete this question', question, method: :delete, data: {confirm: 'Are you sure?'}
+        p= link_to 'Edit', '', class: 'edit-question-link', data: { question_id: question.id }
 
-    - if current_user&.subscribed?(question)
-      p= link_to 'Unsubscribe', question_subscription_path(question), class: 'btn btn-default btn-sm unsubscribe', method: :delete, remote: true, data: { type: :json }
-    - else
-      p= link_to 'Subscribe', question_subscriptions_path(question), class: 'btn btn-default btn-sm subscribe', method: :post, remote: true, data: { type: :json }
+      - if current_user&.subscribed?(question)
+        p= link_to 'Unsubscribe', question_subscription_path(question), class: 'btn btn-default btn-sm unsubscribe', method: :delete, remote: true, data: { type: :json }
+      - else
+        p= link_to 'Subscribe', question_subscriptions_path(question), class: 'btn btn-default btn-sm subscribe', method: :post, remote: true, data: { type: :json }
 
-    p= form_for question, html: {id: "edit-question-#{question.id}"}, remote: true do |f|
-      p= f.label :title
-      p= f.text_field :title, class: 'form-control'
+      p= form_for question, html: {id: "edit-question-#{question.id}"}, remote: true do |f|
+        p= f.label :title
+        p= f.text_field :title, class: 'form-control'
 
-      p= f.label :body
-      p= f.text_area :body, class: 'form-control'
+        p= f.label :body
+        p= f.text_area :body, class: 'form-control'
 
-      p= f.submit 'Save', class: 'btn btn-default'
+        p= f.submit 'Save', class: 'btn btn-default'
 
-    h4 Comments
-    .comments
-      = render @question.comments
+      h4 Comments
+      .comments
+        = render @question.comments, cached: true
 
-    h4 Leave comment
-    = render 'comments/comment_field', resource: @question, comment: @question.comments.build
+      h4 Leave comment
+      = render 'comments/comment_field', resource: @question, comment: @question.comments.build
