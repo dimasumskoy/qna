@@ -1,5 +1,5 @@
 class Vote < ApplicationRecord
-  belongs_to :votable, polymorphic: true
+  belongs_to :votable, polymorphic: true, touch: true
 
   validates :votable, :value, presence: true
   validates :votable_type, inclusion: %w(Question Answer)
