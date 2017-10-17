@@ -65,25 +65,16 @@
   border-color: #2BBBAD;
 }
 
-.question .comments {
+.question-comments,
+.answer-comments {
   color: #666;
 }
-
-h4.question-comments {
-  color: #1D7F76;
-  border-bottom: 1px solid #1D7F76;
-  padding: 0.5em 0;
-}
-
-.question-comments-spoiler .comments {
+.question-comments-spoiler .question-comments {
   display: none;
 }
-.question-comments-spoiler input[type=checkbox] {
+.question-comments-spoiler input#question-spoiler[type=checkbox] {
   display: none;
 }
-.question-comments-spoiler input[type=checkbox]:checked + .comments {
+.question-comments-spoiler input#question-spoiler[type=checkbox]:checked + .question-comments {
   display: block;
 }
-
-.spoiler input[type=checkbox] .comments { display: none; }
-.spoiler input[type=checkbox]:checked .comments { display: block; }

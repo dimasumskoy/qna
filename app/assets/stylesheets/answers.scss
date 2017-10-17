@@ -7,3 +7,13 @@
   font-size: 0.8em;
   color: green;
 }
+
+.answer-comments-spoiler .answer-comments {
+  display: none;
+}
+.answer-comments-spoiler input.answers-spoiler[type=checkbox] {
+  display: none;
+}
+.answer-comments-spoiler input.answers-spoiler[type=checkbox]:checked + .answer-comments {
+  display: block;
+}

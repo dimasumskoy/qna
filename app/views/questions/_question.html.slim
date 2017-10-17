@@ -30,12 +30,12 @@
         p= f.submit 'Save', class: 'btn btn-default'
 
       .question-comments-spoiler
-        label.comments-btn for='spoiler'
+        label.comments-btn for='question-spoiler'
           |
             Comments&nbsp;
           i class="fa fa-angle-double-down"
-        input#spoiler type='checkbox'
-        .comments
+        input#question-spoiler type='checkbox'
+        .question-comments
           = render @question.comments
           h4 Leave comment
           = render 'comments/comment_field', resource: @question, comment: @question.comments.build

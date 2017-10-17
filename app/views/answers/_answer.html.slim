@@ -26,8 +26,13 @@
         p= f.text_area :body, class: 'form-control'
         p= f.submit 'Save', class: 'btn btn-default btn-sm'
 
-      h4 Comments
-      .comments
-        = render answer.comments
-
-      = render 'comments/comment_field', resource: answer, comment: answer.comments.build
+      .answer-comments-spoiler
+        label.comments-btn for="answer-spoiler-#{answer.id}"
+          |
+            Comments&nbsp;
+          i class="fa fa-angle-double-down"
+        input id="answer-spoiler-#{answer.id}" class="answers-spoiler" type='checkbox'
+        .answer-comments
+          = render answer.comments
+          h4 Leave comment
+          = render 'comments/comment_field', resource: answer, comment: answer.comments.build
