@@ -1,3 +1,5 @@
 - cache comment do
   div id="comment-#{comment.id}"
-  p= comment.body
+    p
+      span.comment-marker
+      = comment.body

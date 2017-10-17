@@ -99,3 +99,18 @@ a:hover {
     border-color: #2BBBAD;
     background: #2BBBAD;
 }
+
+span.comment-marker {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    background: #1D7F76;
+    float: left;
+    margin: 5px 10px;
+}
+
+.comments-btn {
+    cursor: pointer;
+    margin: 10px 0;
+}

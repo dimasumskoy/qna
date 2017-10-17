@@ -29,9 +29,13 @@
 
         p= f.submit 'Save', class: 'btn btn-default'
 
-      h4 Comments
-      .comments
-        = render @question.comments
-
-      h4 Leave comment
-      = render 'comments/comment_field', resource: @question, comment: @question.comments.build
+      .question-comments-spoiler
+        label.comments-btn for='spoiler'
+          |
+            Comments&nbsp;
+          i class="fa fa-angle-double-down"
+        input#spoiler type='checkbox'
+        .comments
+          = render @question.comments
+          h4 Leave comment
+          = render 'comments/comment_field', resource: @question, comment: @question.comments.build

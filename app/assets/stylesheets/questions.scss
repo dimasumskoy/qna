@@ -12,15 +12,16 @@
 
 .question-rating {
   position: absolute;
+  float: left;
   left: -3%;
-  top: -7.5%;
+  top: 0;
   width: 30px;
   height: 100px;
 }
 
 .question-rating .current_rating {
   position: absolute;
-  top: 40%;
+  top: 12%;
   font-size: 1.7em;
   color: #1D7F76;
 }
@@ -28,14 +29,14 @@
 .question-rating .vote-links .vote-up {
   position: absolute;
   left: 0;
-  top: 10%;
+  top: -15%;
   font-size: 1.7em;
 }
 
 .question-rating .vote-links .vote-down {
   position: absolute;
-  left: 0;
-  bottom: 0;
+  left: 5%;
+  bottom: 30%;
   font-size: 2em;
 }
 
@@ -63,3 +64,26 @@
   background: #2BBBAD;
   border-color: #2BBBAD;
 }
+
+.question .comments {
+  color: #666;
+}
+
+h4.question-comments {
+  color: #1D7F76;
+  border-bottom: 1px solid #1D7F76;
+  padding: 0.5em 0;
+}
+
+.question-comments-spoiler .comments {
+  display: none;
+}
+.question-comments-spoiler input[type=checkbox] {
+  display: none;
+}
+.question-comments-spoiler input[type=checkbox]:checked + .comments {
+  display: block;
+}
+
+.spoiler input[type=checkbox] .comments { display: none; }
+.spoiler input[type=checkbox]:checked .comments { display: block; }
