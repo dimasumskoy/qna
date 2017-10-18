@@ -8,6 +8,16 @@
   color: green;
 }
 
+.answer-comments-spoiler .comments-btn {
+  font-style: italic;
+  font-weight: 100;
+  font-size: 0.9em;
+  border-bottom: 1px dotted transparent;
+}
+.answer-comments-spoiler .comments-btn:hover {
+  border-bottom: 1px dotted #999999;
+}
+
 .answer-comments-spoiler .answer-comments {
   display: none;
 }
@@ -16,4 +26,33 @@
 }
 .answer-comments-spoiler input.answers-spoiler[type=checkbox]:checked + .answer-comments {
   display: block;
+}
+
+.answer {
+  position: relative;
+  margin: 2em 0;
+  border-bottom: 1px solid #DDDDDD;
+}
+
+.answer-rating {
+  position: absolute;
+  left: -3%;
+}
+
+.answer-rating .current_rating {
+  font-size: 1.2em;
+  color: #1D7F76;
+}
+
+.answer-rating .vote-links .vote-up {
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  font-size: 1.3em;
+}
+.answer-rating .vote-links .vote-down {
+  position: absolute;
+  bottom: -20%;
+  right: 15%;
+  font-size: 1.5em;
 }

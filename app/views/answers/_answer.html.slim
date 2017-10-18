@@ -1,10 +1,11 @@
 - if answer.persisted?
   - cache answer do
-    div id="answer-#{answer.id}"
+    div id="answer-#{answer.id}" class="answer"
       - if answer.best?
         p.best-answer Best answer
 
-      = render 'common/rating', resource: answer
+      .answer-rating
+        = render 'common/rating', resource: answer
 
       p.answer-content
         = answer.body
